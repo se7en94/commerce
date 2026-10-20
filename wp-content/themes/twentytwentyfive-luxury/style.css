@@ -8,3 +8,87 @@ Template: twentytwentyfive
 Version: 1.0.0
 Text Domain: tt5-luxury
 */
+
+/* ============================================
+   VELORÉ — Luxury visual spec
+   Noir / Ivory / Gold · Playfair Display serif
+   ============================================ */
+
+/* ----- Product cards (archive grid) -----
+   验收 T-1.2：默认只显示图 + 标题，hover 时淡入价格与加购按钮 */
+.luxury-product-card .luxury-product-price,
+.luxury-product-card .luxury-product-button {
+	opacity: 0;
+	transform: translateY(6px);
+	transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.luxury-product-card:hover .luxury-product-price,
+.luxury-product-card:hover .luxury-product-button,
+.luxury-product-card:focus-within .luxury-product-price,
+.luxury-product-card:focus-within .luxury-product-button {
+	opacity: 1;
+	transform: translateY(0);
+}
+
+/* 图片 hover 轻微放大，保持极简质感 */
+.luxury-product-card .luxury-product-image img {
+	transition: transform 0.6s ease;
+}
+
+.luxury-product-card:hover .luxury-product-image img {
+	transform: scale(1.03);
+}
+
+/* ----- 全局细节 ----- */
+
+/* 文本选中态用品牌金 */
+::selection {
+	background: #C9A962;
+	color: #0A0A0A;
+}
+
+/* 键盘可达性：金色 focus 轮廓 */
+a:focus-visible,
+button:focus-visible,
+.wp-element-button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+	outline: 1px solid #C9A962;
+	outline-offset: 3px;
+}
+
+/* 分页链接 hover 金色过渡 */
+.wp-block-query-pagination a {
+	transition: color 0.25s ease;
+}
+
+.wp-block-query-pagination a:hover {
+	color: #C9A962;
+}
+
+/* 大屏下让商品网格超出 wideSize（Fashionphile 式宽网格） */
+@media (min-width: 1680px) {
+	.luxury-shop .wp-block-woocommerce-product-collection.alignwide {
+		max-width: 1600px;
+	}
+}
+
+/* 移动端：商品卡片间距收紧，价格在触屏上始终可见（无 hover） */
+@media (max-width: 782px) {
+	.luxury-product-card .luxury-product-price {
+		opacity: 1;
+		transform: none;
+	}
+
+	.wp-block-woocommerce-product-collection {
+		gap: 24px !important;
+	}
+}
+
+/* 平滑滚动（锚点跳转到精选商品等区块） */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}

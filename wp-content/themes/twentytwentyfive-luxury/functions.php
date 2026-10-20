@@ -20,6 +20,11 @@ function tt5_luxury_setup() {
     remove_action('wp_head', '_wp_render_fonts', 1);
     add_action('wp_enqueue_scripts', 'tt5_luxury_enqueue_fonts');
     add_action('admin_enqueue_scripts', 'tt5_luxury_enqueue_fonts');
+
+    // Block themes don't auto-load style.css — enqueue it manually
+    add_action('wp_enqueue_scripts', function () {
+        wp_enqueue_style('tt5-luxury-style', get_stylesheet_uri(), [], wp_get_theme()->get('Version'));
+    });
 }
 add_action('after_setup_theme', 'tt5_luxury_setup');
 

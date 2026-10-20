@@ -125,7 +125,7 @@
 | Task | 描述 | 验收标准 | 预估 |
 |---|---|---|---|
 | ✅ T-1.1 | `front-page.html` 模板 + Hero banner | 首页展示 hero 大图 + 3 列主推类目 | 4h |
-| T-1.2 | `archive-product.html` 商品网格 | 4 列网格、hover 显价格、分页 | 4h |
+| ✅ T-1.2 | `archive-product.html` 商品网格 | 4 列网格、hover 显价格、分页 | 4h |
 | T-1.3 | `single-product.html` 详情页 | 大图左 + 信息右，含 breadcrumb | 3h |
 | ✅ T-1.4 | `parts/header.html` + `parts/footer.html` | 顶部 nav + 底部 4 列链接 | 2h |
 | T-1.5 | `style.css` 视觉规范 | 极简白底 + 衬线标题字体 + 大留白 | 3h |
@@ -189,6 +189,11 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.2  archive-product 商品网格定稿（4 列 + hover 显价格 + 图片 4/3 裁切）+ style.css 视觉规范 v1
+            踩坑①：WP 数据库 wp_posts 里 post_type='wp_template' 的自定义模板会覆盖主题 .html 文件
+                   （站点编辑器保存过就会生成）。改主题模板后页面无变化时，先查 DELETE FROM wp_posts
+                   WHERE post_type='wp_template' AND post_name='xxx';
+            踩坑②：Block theme 不会自动加载 style.css，必须在 functions.php 手动 wp_enqueue_style
 2026-10-20  完成 T-1.1  front-page.html 首页模板上线（Hero/类目/精选商品/价值主张/寄卖CTA + AI 生成视觉素材）
             注意：首页类目链接指向 /product-category/{handbags,watches,jewelry}/，需在 WP 后台建好这三个类目
 2026-10-20  完成 T-1.4  header.html / footer.html 定稿
