@@ -190,6 +190,10 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.7.1  移动端抽屉菜单可读性修复：链接强制 #FAFAFA（对比度 11.55，WCAG AAA）、
+            字号 1.25rem、间距 30px、关闭按钮亮色放大 28px
+            踩坑⑦：theme.json 给 core/navigation 元素 link 定义的 text color 会以更高优先级
+                   覆盖 style.css 的普通规则——覆盖 theme.json 生成样式需用字面量+!important
 2026-10-20  完成 T-1.4.5  header 顶部呼吸感 + 图标统一：padding-top 24px→clamp(28,3.5vw,48)、
             bottom 16px→clamp(16,2vw,28)；右侧三图标统一 32px 视觉高度（flex center）
             踩坑⑥：block 模板文件里 static block 渲染以 HTML 内联 style 为准，JSON 注释里的

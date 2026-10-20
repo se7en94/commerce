@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.0.7
+Version: 1.0.9
 Text Domain: tt5-luxury
 */
 
@@ -305,7 +305,42 @@ Text Domain: tt5-luxury
 }
 
 .luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open {
-	background-color: var(--wp--preset--color--accent-3) !important;
+	background-color: #0A0A0A !important;
+	color: var(--wp--preset--color--base);
+	padding: 88px 32px 48px;
+}
+
+/* 移动端抽屉：亮色大字菜单，保证暗底对比度 */
+.luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content,
+.luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content a,
+.luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-link a,
+.luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open a.wp-block-navigation-item__content {
+	color: #FAFAFA !important;
+	font-size: 1.25rem;
+	letter-spacing: 0.22em;
+	transition: color 0.25s ease;
+}
+
+.luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-item__content:hover,
+.luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation-link a:hover {
+	color: #C9A962 !important;
+}
+
+.luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open .wp-block-navigation__responsive-container-content {
+	gap: 30px;
+}
+
+/* 抽屉关闭按钮：亮色可见 */
+.luxury-main-nav .wp-block-navigation__responsive-container-close {
+	color: #FAFAFA;
+	right: 24px;
+	top: 24px;
+}
+
+.luxury-main-nav .wp-block-navigation__responsive-container-close svg {
+	fill: #FAFAFA !important;
+	width: 28px;
+	height: 28px;
 }
 
 /* 中屏断点：990px 以下强制汉堡菜单，防止图标组换行错位 */
