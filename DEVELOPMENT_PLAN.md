@@ -130,7 +130,7 @@
 | ✅ T-1.4 | `parts/header.html` + `parts/footer.html` | 顶部 nav + 底部 4 列链接 | 2h |
 | ✅ T-1.8 | `templates/search.html` 搜索结果页 | 3 列结果网格 + 无结果重搜表单 | 2h |
 | T-1.5 | `style.css` 视觉规范 | 极简白底 + 衬线标题字体 + 大留白 | 3h |
-| T-1.6 | `functions.php` 注册菜单/侧边栏/缩略图 | WP 后台可见菜单编辑器 | 1h |
+| ✅ T-1.6 | `functions.php` 注册菜单/侧边栏/缩略图 | WP 后台可见菜单编辑器 | 1h |
 | T-1.7 | 移动端响应式 | iPhone 12/13 视口下布局不破 | 2h |
 
 ### Phase 2 — 商品数据
@@ -190,6 +190,9 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.6  functions.php 主题能力补全：title-tag / custom-logo / html5、
+            woocommerce 缩略图 600x450 4/3 裁切（与商品网格比例一致）、product_grid 默认 4 列；
+            主题版本 bump 1.0.12
 2026-10-20  完成 T-1.4.6  footer 修复：①版权行错乱（p 内嵌 site-title 块导致浏览器拆解）
             → 改纯文本 © 2026 VELORÉ · All Rights Reserved + flex space-between 对齐；
             ②订阅表单改 wp:html 静态 form（金色实心按钮 + 金线输入框，占位提交逻辑，

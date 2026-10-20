@@ -7,10 +7,29 @@ if (!defined('ABSPATH')) {
 function tt5_luxury_setup() {
     load_theme_textdomain('tt5-luxury', get_stylesheet_directory() . '/languages');
 
-    add_theme_support('woocommerce');
+    add_theme_support('woocommerce', [
+        'thumbnail_image_width' => 600,
+        'single_image_width'    => 900,
+        'product_grid'          => [
+            'default_rows'    => 3,
+            'min_rows'        => 1,
+            'default_columns' => 4,
+            'min_columns'     => 2,
+            'max_columns'     => 5,
+        ],
+    ]);
     add_theme_support('wc-product-gallery-zoom');
     add_theme_support('wc-product-gallery-lightbox');
     add_theme_support('wc-product-gallery-slider');
+
+    add_theme_support('title-tag');
+    add_theme_support('custom-logo', [
+        'height'      => 96,
+        'width'       => 400,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ]);
+    add_theme_support('html5', ['search-form', 'gallery', 'caption', 'style', 'script', 'navigation-widgets']);
 
     add_theme_support('wp-block-styles');
     add_theme_support('responsive-embeds');
@@ -27,6 +46,15 @@ function tt5_luxury_setup() {
     });
 }
 add_action('after_setup_theme', 'tt5_luxury_setup');
+
+// Shop catalog thumbnails cropped to 4/3 to match the archive grid aspect ratio
+add_filter('woocommerce_get_image_size_thumbnail', function ($size) {
+    return [
+        'width'  => 600,
+        'height' => 450,
+        'crop'   => true,
+    ];
+});
 
 function tt5_luxury_enqueue_fonts() {
     wp_enqueue_style(
