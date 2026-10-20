@@ -1,0 +1,56 @@
+# 环境变量（永远不要提交）
+.env
+.env.local
+.env.*.local
+
+# WordPress 上传/升级产生的临时文件
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/cache/
+
+# WordPress 核心（用 docker image 提供，不需要进版本库）
+# 如果你的部署是「整个 WP 目录都进仓库」则注释掉下面两条
+# wp-admin/
+# wp-includes/
+
+# WooCommerce 插件 vendored 源码（体积大，且官方仓库可拉取）
+# 当前仓库是把 WooCommerce 作为插件源码 vendor 进来开发的，所以保留
+# 如果未来改成 composer / wpackagist 安装，再加：
+# includes/
+# templates/
+# src/
+# vendor/
+# packages/
+# lib/
+# i18n/
+# assets/
+# woocommerce.php
+# uninstall.php
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 本地 IDE 配置
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Trae/AI 工具临时产物
+.trae-html-share-packages/
+.trae/
+
+# 日志与调试
+*.log
+debug.log
+wp-content/debug.log
+
+# Node / 构建产物（如果后续引入构建）
+node_modules/
+dist/
+build/
+
+# 缓存
+.cache/
+*.cache

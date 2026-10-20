@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# pre-commit hook：在 commit 前扫描将被暂存的文件里是否有疑似密钥
+# 安装：cp scripts/pre-commit-hook .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+# 任何命中都会阻断本次提交，需要手动确认或白名单豁免
+
+BLOCKED_PATTERNS=(
+  # PayPal PPCP 真实 client_id（80 字符左右的长 token）
+  '[A-Za-z0-9_-]{70,}'
+  # PayPal / Stripe / Airwallex / Square 等主流支付的 secret 前缀
+  'client_secret\s*[:=]'
+  'sandbox_merchant'
+  'TEST_SANDBOX_MERCHANT'
+  'sb-seller@example\.com'
+  'sk_(test|live)_[A-Za-z0-9]{20,}'   # Stripe
+  'rk_(test|live)_[A-Za-z0-9]{20,}'   # Stripe restricted
+  'AKIA[0-9A-Z]{16}'                   # AWS Access Key
+  'PRIVATE KEY'                        # PEM 私钥
+  'BEGIN RSA PRIVATE KEY'
+  '"api[_-]?key"\s*:\s*"[A-Za-z0-9_\-]{16,}'   # 常见 api_key JSON 字段
+)
+
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null)
+if [ -z "$STAGED_FILES" ]; then
+  exit 0
+fi
+
+violations=()
+while IFS= read -r file; do
+  [ -z "$file" ] && continue
+  [ ! -f "$file" ] && continue
+  for pattern in "${BLOCKED_PATTERNS[@]}"; do
+    if grep -q -E "$pattern" "$file" 2>/dev/null; then
+      matches=$(grep -n -E "$pattern" "$file" 2>/dev/null | head -3)
+      violations+=("⚠️  $file 命中模式 [$pattern]")
+      violations+=("   $matches")
+    fi
+  done
+done <<< "$STAGED_FILES"
+
+if [ ${#violations[@]} -gt 0 ]; then
+  echo ""
+  echo "═══════════════════════════════════════════════════════"
+  echo "  🛑 PRE-COMMIT BLOCKED — 疑似敏感信息已暂存"
+  echo "═══════════════════════════════════════════════════════"
+  for v in "${violations[@]}"; do
+    echo "$v"
+  done
+  echo ""
+  echo "处理方式："
+  echo "  1) 确认不是真实密钥（如占位符/示例值），修改后重新暂存"
+  echo "  2) 真实密钥 → 移入 .env（已被 .gitignore 忽略）"
+  echo "  3) 豁免：COMMIT_EDITMSG 里第一行加 SKIP_SECRET_SCAN=1"
+  echo ""
+  exit 1
+fi
+
+exit 0

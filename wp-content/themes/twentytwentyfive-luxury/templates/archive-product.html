@@ -1,0 +1,73 @@
+<!-- wp:template-part {"slug":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"constrained"},"align":"full","style":{"spacing":{"blockGap":"0px"}},"className":"luxury-shop"} -->
+<main class="wp-block-group alignfull luxury-shop">
+
+	<!-- wp:group {"align":"full","style":{"color":{"background":"var(--wp--preset--color--accent-3)"},"spacing":{"padding":{"top":"clamp(60px, 8vw, 120px)","bottom":"clamp(60px, 8vw, 120px)"}}},"className":"luxury-shop-hero"} -->
+	<div class="wp-block-group alignfull luxury-shop-hero" style="background-color:var(--wp--preset--color--accent-3);padding-top:clamp(60px, 8vw, 120px);padding-bottom:clamp(60px, 8vw, 120px)">
+		<!-- wp:group {"layout":{"type":"constrained"}} -->
+		<div class="wp-block-group">
+			<!-- wp:heading {"level":1,"align":"center","style":{"typography":{"fontFamily":"var(--wp--preset--font-family--playfair-display)","fontSize":"3rem","fontWeight":"400","letterSpacing":"-0.02em","lineHeight":"1.1"},"color":{"text":"var(--wp--preset--color--contrast)"}},"className":"luxury-hero-title"} -->
+			<h1 class="wp-block-heading has-text-align-center luxury-hero-title" style="color:var(--wp--preset--color--contrast);font-family:var(--wp--preset--font-family--playfair-display);font-size:3rem;font-weight:400;letter-spacing:-0.02em;line-height:1.1">The Collection</h1>
+			<!-- /wp:heading -->
+
+			<!-- wp:separator {"align":"center","style":{"color":{"text":"var(--wp--preset--color--accent-1)"},"spacing":{"margin":{"top":"24px","bottom":"24px"}}},"className":"luxury-gold-separator"} -->
+			<hr class="wp-block-separator has-text-color has-alpha-channel-opacity has-accent-1-color aligncenter luxury-gold-separator" style="color:var(--wp--preset--color--accent-1);margin-top:24px;margin-bottom:24px"/>
+			<!-- /wp:separator -->
+
+			<!-- wp:paragraph {"align":"center","style":{"typography":{"fontFamily":"var(--wp--preset--font-family--cormorant-garamond)","fontSize":"1.25rem","fontStyle":"italic","fontWeight":"400","lineHeight":"1.5"},"color":{"text":"var(--wp--preset--color--accent-4)"}},"className":"luxury-hero-subtitle"} -->
+			<p class="has-text-align-center luxury-hero-subtitle" style="color:var(--wp--preset--color--accent-4);font-family:var(--wp--preset--font-family--cormorant-garamond);font-size:1.25rem;font-style:italic;font-weight:400;line-height:1.5">Curated pieces for the discerning collector</p>
+			<!-- /wp:paragraph -->
+		</div>
+		<!-- /wp:group -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:group {"layout":{"type":"constrained"},"style":{"spacing":{"padding":{"top":"40px","bottom":"40px"},"blockGap":"24px"}}} -->
+	<div class="wp-block-group" style="padding-top:40px;padding-bottom:40px">
+		<!-- wp:woocommerce/breadcrumbs {"className":"luxury-breadcrumbs"} /-->
+
+		<!-- wp:woocommerce/store-notices /-->
+
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"},"style":{"spacing":{"blockGap":"16px"}}} -->
+		<div class="wp-block-group" style="display:flex;flex-wrap:wrap;justify-content:space-between">
+			<!-- wp:woocommerce/product-results-count {"style":{"typography":{"fontSize":"0.8125rem","letterSpacing":"0.1em","textTransform":"uppercase"},"color":{"text":"var(--wp--preset--color--accent-4)"}}} /-->
+			<!-- wp:woocommerce/catalog-sorting {"style":{"typography":{"fontSize":"0.8125rem","letterSpacing":"0.1em"}}} /-->
+		</div>
+		<!-- /wp:group -->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:woocommerce/product-collection {"queryId":0,"query":{"woocommerceAttributes":[],"woocommerceStockStatus":["instock","outofstock","onbackorder"],"taxQuery":{},"isProductCollectionBlock":true,"perPage":12,"pages":0,"offset":0,"postType":"product","order":"asc","orderBy":"title","author":"","search":"","exclude":[],"sticky":"","inherit":true},"tagName":"div","dimensions":{"widthType":"fill","fixedWidth":""},"displayLayout":{"type":"flex","columns":3,"shrinkColumns":true},"convertedFromProducts":false,"queryContextIncludes":["collection"],"align":"wide","style":{"spacing":{"blockGap":"48px"}}} -->
+	<div class="wp-block-woocommerce-product-collection alignwide" style="gap:48px">
+		<!-- wp:woocommerce/product-template {"style":{"spacing":{"blockGap":"16px"}}} -->
+		<!-- wp:woocommerce/product-image {"showSaleBadge":true,"imageSizing":"cover","isDescendentOfQueryLoop":true,"style":{"border":{"radius":"0px"},"spacing":{"margin":{"bottom":"0px"}}},"className":"luxury-product-image"} -->
+			<!-- wp:woocommerce/product-sale-badge {"isDescendentOfQueryLoop":true,"align":"right","style":{"color":{"background":"var(--wp--preset--color--accent-1)","text":"var(--wp--preset--color--base)"},"typography":{"fontSize":"0.6875rem","letterSpacing":"0.2em","textTransform":"uppercase"}}} /-->
+		<!-- /wp:woocommerce/product-image -->
+
+		<!-- wp:post-title {"textAlign":"center","level":3,"isLink":true,"fontSize":"medium","__woocommerceNamespace":"woocommerce/product-collection/product-title","style":{"typography":{"fontFamily":"var(--wp--preset--font-family--playfair-display)","fontSize":"1.125rem","fontWeight":"400","letterSpacing":"0em","lineHeight":"1.3"},"color":{"text":"var(--wp--preset--color--contrast)"}},"className":"luxury-product-title"} /-->
+
+		<!-- wp:woocommerce/product-price {"textAlign":"center","isDescendentOfQueryLoop":true,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--playfair-display)","fontSize":"1.125rem","fontWeight":"500"},"color":{"text":"var(--wp--preset--color--accent-1)"}}} /-->
+
+		<!-- wp:woocommerce/product-button {"textAlign":"center","isDescendentOfQueryLoop":true,"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.15em","textTransform":"uppercase"},"border":{"radius":"0px","width":"1px","color":"var(--wp--preset--color--accent-1)"},"spacing":{"padding":{"top":"0.625rem","bottom":"0.625rem","left":"1.5rem","right":"1.5rem"}}},"className":"luxury-product-button"} /-->
+		<!-- /wp:woocommerce/product-template -->
+
+		<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"blockGap":"24px","margin":{"top":"60px"}}}} -->
+		<!-- wp:query-pagination-previous {"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.15em","textTransform":"uppercase"}}} /-->
+		<!-- wp:query-pagination-numbers {"style":{"typography":{"fontSize":"0.75rem"}}} /-->
+		<!-- wp:query-pagination-next {"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.15em","textTransform":"uppercase"}}} /-->
+		<!-- /wp:query-pagination -->
+
+		<!-- wp:woocommerce/product-collection-no-results -->
+		<!-- wp:group {"layout":{"type":"flex","orientation":"vertical","justifyContent":"center","flexWrap":"wrap"}} -->
+		<div class="wp-block-group">
+			<!-- wp:pattern {"slug":"woocommerce/no-products-found-clear-filters"} /-->
+		</div>
+		<!-- /wp:group -->
+		<!-- /wp:woocommerce/product-collection-no-results -->
+	</div>
+	<!-- /wp:woocommerce/product-collection -->
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer"} /-->

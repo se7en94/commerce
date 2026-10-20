@@ -1,0 +1,42 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
+
+  wordpress:
+    image: wordpress:latest
+    restart: unless-stopped
+    depends_on:
+      - db
+    env_file:
+      - .env
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: "${WORDPRESS_DEBUG:-1}"
+      # 让 WordPress 识别到自己跑在反向代理后面时能正确处理 HTTPS
+      #（prod 环境 Cloudflare + SSL 时必需）
+      VIRTUAL_HOST: "${WP_HOME:-localhost}"
+      LETSENCRYPT_HOST: "${WP_HOME:-localhost}"
+    volumes:
+      - wp_data:/var/www/html
+      - ./:/var/www/html/wp-content/plugins/woocommerce
+    ports:
+      - "8080:80"
+
+volumes:
+  db_data:
+  wp_data:
