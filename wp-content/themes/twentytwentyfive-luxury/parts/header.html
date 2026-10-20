@@ -1,24 +1,24 @@
 <!-- wp:group {"tagName":"header","align":"full","layout":{"type":"constrained","contentSize":"1600px"},"style":{"spacing":{"padding":{"top":"24px","bottom":"16px"},"blockGap":"0px"}},"className":"luxury-header"} -->
 <header class="wp-block-group alignfull luxury-header" style="padding-top:24px;padding-bottom:16px">
 
-	<!-- 主行：Logo 左 · 搜索居中 · 账户/购物车右 -->
-	<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","alignItems":"center","verticalAlignment":"center"},"style":{"spacing":{"blockGap":"24px","padding":{"bottom":"20px"}}},"className":"luxury-header-toprow"} -->
-	<div class="wp-block-group luxury-header-toprow" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px;padding-bottom:20px">
+	<!-- 主行：Logo + 菜单 靠左 · 图标组（搜索/账户/购物车）靠右 -->
+	<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","alignItems":"center","verticalAlignment":"center"},"style":{"spacing":{"blockGap":"32px","padding":{"bottom":"20px"}}},"className":"luxury-header-toprow"} -->
+	<div class="wp-block-group luxury-header-toprow" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:32px;padding-bottom:20px">
 
-		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","alignItems":"center"},"style":{"spacing":{"blockGap":"24px"},"layout":{"selfStretch":"fill","flexSize":"0"}},"className":"luxury-header-left"} -->
-		<div class="wp-block-group luxury-header-left" style="display:flex;flex-wrap:nowrap;align-items:center;gap:24px">
-			<!-- wp:site-title {"level":0,"textAlign":"center","style":{"typography":{"fontFamily":"var(--wp--preset--font-family--playfair-display)","fontSize":"1.5rem","fontWeight":"500","letterSpacing":"0.1em","textTransform":"uppercase","lineHeight":"1.1"},"color":{"text":"var(--wp--preset--color--contrast)"}},"className":"luxury-site-title"} /-->
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","alignItems":"center","verticalAlignment":"center"},"style":{"spacing":{"blockGap":"40px"}},"className":"luxury-header-left"} -->
+		<div class="wp-block-group luxury-header-left" style="display:flex;flex-wrap:wrap;align-items:center;gap:40px">
+			<!-- wp:site-title {"level":0,"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--playfair-display)","fontSize":"1.5rem","fontWeight":"500","letterSpacing":"0.1em","textTransform":"uppercase","lineHeight":"1.1"},"color":{"text":"var(--wp--preset--color--contrast)"}},"className":"luxury-site-title"} /-->
+			<!-- wp:navigation {"ref":11,"__unstableLocation":"primary","overlayMenu":"mobile","layout":{"type":"flex","justifyContent":"left","orientation":"horizontal"},"isResponsive":true,"style":{"typography":{"fontSize":"0.75rem","fontWeight":"400","letterSpacing":"0.18em","textTransform":"uppercase"},"spacing":{"blockGap":"32px"}},"className":"luxury-main-nav"} /-->
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center","alignItems":"center"},"style":{"spacing":{"blockGap":"0px"}},"className":"luxury-header-center"} -->
-		<div class="wp-block-group luxury-header-center" style="display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:0">
-			<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search","buttonText":"","buttonPosition":"button-inside","buttonUseIcon":true,"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.1em"},"color":{"text":"var(--wp--preset--color--accent-4)"}},"className":"luxury-search"} /-->
-		</div>
-		<!-- /wp:group -->
-
-		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"flex-end","alignItems":"center"},"style":{"spacing":{"blockGap":"20px"},"layout":{"selfStretch":"fill","flexSize":"0"}},"className":"luxury-header-right"} -->
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"flex-end","alignItems":"center"},"style":{"spacing":{"blockGap":"20px"}},"className":"luxury-header-right"} -->
 		<div class="wp-block-group luxury-header-right" style="display:flex;flex-wrap:nowrap;justify-content:flex-end;align-items:center;gap:20px">
+			<!-- wp:html -->
+			<button type="button" class="luxury-search-toggle" aria-label="Search" onclick="document.getElementById('luxury-search-modal').showModal()">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+			</button>
+			<!-- /wp:html -->
 			<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconStyle":"line","showLoginOption":true,"iconClass":"wc-block-customer-account__account-icon","style":{"typography":{"fontSize":"0.8125rem"}},"className":"luxury-account"} /-->
 			<!-- wp:woocommerce/mini-cart {"hasHiddenPrice":true,"layoutStyle":"plain","openCartButton":{"hasHiddenBadge":false,"hasHiddenPrice":true,"pricePosition":"outside","style":{"typography":{"fontSize":"0.8125rem"}}},"style":{"typography":{"fontSize":"0.8125rem"},"spacing":{"blockGap":"8px"}},"className":"luxury-cart"} /-->
 		</div>
@@ -27,9 +27,20 @@
 	</div>
 	<!-- /wp:group -->
 
-	<!-- wp:separator {"align":"full","style":{"color":{"text":"var(--wp--preset--color--accent-6)"},"spacing":{"margin":{"top":"0px","bottom":"14px"}}}} /-->
+	<!-- wp:separator {"align":"full","style":{"color":{"text":"var(--wp--preset--color--accent-6)"},"spacing":{"margin":{"top":"0px","bottom":"0px"}}}} /-->
 
-	<!-- wp:navigation {"ref":11,"__unstableLocation":"primary","overlayMenu":"mobile","layout":{"type":"flex","justifyContent":"center","orientation":"horizontal"},"isResponsive":true,"style":{"typography":{"fontSize":"0.75rem","fontWeight":"400","letterSpacing":"0.18em","textTransform":"uppercase"},"spacing":{"blockGap":"40px"}},"className":"luxury-main-nav"} /-->
+	<!-- wp:html -->
+	<dialog id="luxury-search-modal" class="luxury-search-modal" onclick="if(event.target===this)this.close()">
+		<button type="button" class="luxury-search-close" aria-label="Close" onclick="this.closest('dialog').close()">&times;</button>
+		<form role="search" method="get" action="/">
+			<input type="search" name="s" placeholder="What are you looking for?" autocomplete="off" autofocus required/>
+			<button type="submit" aria-label="Submit search">
+				<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+			</button>
+		</form>
+		<p class="luxury-search-hint">Press ESC to close</p>
+	</dialog>
+	<!-- /wp:html -->
 
 </header>
 <!-- /wp:group -->

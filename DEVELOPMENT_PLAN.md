@@ -189,6 +189,9 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.4.3  搜索改为右上角放大镜图标 + 原生 <dialog> 全屏模态（Playfair 大输入框、
+            ESC/点遮罩/× 关闭、autofocus）；菜单与 Logo 同行靠左（同组 flex）
+            搜索图标按钮与模态用 wp:html 块直出，无需 JS 依赖
 2026-10-20  完成 T-1.4.2  header 重构为经典三段式（Logo 左 / 搜索真居中 / 账户+购物车右），
             导航改 justifyContent:center 居中
             踩坑④：WooCommerce Block Hooks 会把 customer-account 块自动插到 core/navigation
