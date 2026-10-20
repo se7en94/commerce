@@ -1,0 +1,45 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- 搜索结果页：标题 + 3 列结果网格 + 无结果重搜 -->
+
+<!-- wp:group {"tagName":"main","align":"full","style":{"spacing":{"padding":{"top":"clamp(3rem, 6vw, 5rem)","bottom":"clamp(4rem, 8vw, 7rem)","left":"clamp(1.5rem, 6vw, 6rem)","right":"clamp(1.5rem, 6vw, 6rem)"}}},"layout":{"type":"constrained","contentSize":"1600px"}} -->
+<main class="wp-block-group alignfull" style="padding-top:clamp(3rem, 6vw, 5rem);padding-right:clamp(1.5rem, 6vw, 6rem);padding-bottom:clamp(4rem, 8vw, 7rem);padding-left:clamp(1.5rem, 6vw, 6rem)">
+
+	<!-- wp:group {"layout":{"type":"constrained","contentSize":"760px"},"style":{"spacing":{"margin":{"bottom":"clamp(2.5rem, 5vw, 4rem)"}}}} -->
+	<div class="wp-block-group" style="margin-bottom:clamp(2.5rem, 5vw, 4rem)">
+		<!-- wp:paragraph {"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.3em","textTransform":"uppercase","fontWeight":"500"},"color":{"text":"var:preset|color|accent-2"},"spacing":{"margin":{"bottom":"1rem"}}}} -->
+		<p class="has-accent-2-color has-text-color" style="margin-bottom:1rem;font-size:0.75rem;font-weight:500;letter-spacing:0.3em;text-transform:uppercase">Search</p>
+		<!-- /wp:paragraph -->
+		<!-- wp:query-title {"type":"search","style":{"typography":{"fontFamily":"var:preset|font-family|playfair-display","fontSize":"clamp(2rem, 4vw, 3.25rem)","fontWeight":"400","lineHeight":"1.1"}}} /-->
+	</div>
+	<!-- /wp:group -->
+
+	<!-- wp:query {"queryId":0,"query":{"perPage":9,"pages":0,"offset":0,"postType":"post","order":"desc","orderBy":"date","author":"","search":"","exclude":[],"sticky":"","inherit":true},"layout":{"type":"default"}} -->
+	<div class="wp-block-query">
+
+		<!-- wp:post-template {"layout":{"type":"grid","columnCount":3},"style":{"spacing":{"blockGap":"2.5rem"}},"className":"luxury-search-grid"} -->
+		<!-- wp:post-featured-image {"isLink":true,"aspectRatio":"4/3","scale":"cover","style":{"border":{"radius":"0px"}},"className":"luxury-search-card-image"} /-->
+		<!-- wp:post-title {"isLink":true,"level":3,"style":{"typography":{"fontFamily":"var:preset|font-family|playfair-display","fontSize":"1.125rem","fontWeight":"400","lineHeight":"1.35"},"spacing":{"margin":{"top":"1.25rem","bottom":"0.5rem"}}},"className":"luxury-search-card-title"} /-->
+		<!-- wp:post-excerpt {"moreText":"Read More","excerptLength":24,"style":{"typography":{"fontFamily":"var:preset|font-family|cormorant-garamond","fontSize":"1rem","lineHeight":"1.6"},"color":{"text":"#B8B8B8"},"spacing":{"margin":{"top":"0px"}}},"className":"luxury-search-card-excerpt"} /-->
+		<!-- /wp:post-template -->
+
+		<!-- wp:query-no-results -->
+		<!-- wp:group {"layout":{"type":"constrained","contentSize":"560px"},"style":{"typography":{"textAlign":"center"},"spacing":{"padding":{"top":"3rem","bottom":"3rem"}}},"className":"luxury-search-empty"} -->
+		<div class="wp-block-group luxury-search-empty has-text-align-center" style="padding-top:3rem;padding-bottom:3rem">
+			<!-- wp:paragraph {"style":{"typography":{"fontFamily":"var:preset|font-family|cormorant-garamond","fontStyle":"italic","fontSize":"1.5rem","lineHeight":"1.5"},"color":{"text":"var:preset|color|accent-4"},"spacing":{"margin":{"bottom":"2.5rem"}}}} -->
+			<p class="has-text-color" style="color:var(--wp--preset--color--accent-4);margin-bottom:2.5rem;font-family:var(--wp--preset--font-family--cormorant-garamond);font-style:italic;font-size:1.5rem;line-height:1.5">Nothing found. Try a different keyword — perhaps "Hermès", "Cartier" or "Rolex".</p>
+			<!-- /wp:paragraph -->
+			<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search","buttonText":"Search","buttonPosition":"button-outside","style":{"typography":{"fontSize":"0.8125rem"}},"className":"luxury-search-inline"} /-->
+		</div>
+		<!-- /wp:group -->
+		<!-- /wp:query-no-results -->
+
+		<!-- wp:query-pagination {"paginationArrow":"arrow","layout":{"type":"flex","justifyContent":"center","orientation":"horizontal"},"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.2em","textTransform":"uppercase"},"spacing":{"margin":{"top":"clamp(3rem, 6vw, 5rem)"}}},"className":"luxury-pagination"} /-->
+
+	</div>
+	<!-- /wp:query -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

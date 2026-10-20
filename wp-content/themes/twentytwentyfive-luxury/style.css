@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.0.4
+Version: 1.0.5
 Text Domain: tt5-luxury
 */
 
@@ -180,6 +180,80 @@ Text Domain: tt5-luxury
 .luxury-header .wc-block-mini-cart__button {
 	align-items: center;
 	line-height: 1;
+}
+
+/* ===== 搜索结果页 ===== */
+
+/* 结果卡：图片 hover 微放大 + 标题金色过渡 */
+.luxury-search-card-image {
+	overflow: hidden;
+}
+
+.luxury-search-card-image img {
+	transition: transform 0.6s ease;
+}
+
+.luxury-search-grid > .wp-block-post:hover .luxury-search-card-image img {
+	transform: scale(1.03);
+}
+
+.luxury-search-card-title a {
+	transition: color 0.25s ease;
+}
+
+.luxury-search-grid > .wp-block-post:hover .luxury-search-card-title a {
+	color: var(--wp--preset--color--accent-1);
+}
+
+/* 无结果重搜表单：透明底 + 金色底线（与 header 风格一致） */
+.luxury-search-inline {
+	max-width: 480px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.luxury-search-inline .wp-block-search__inside-wrapper {
+	align-items: center;
+	background: transparent;
+	border: 0;
+	border-bottom: 1px solid var(--wp--preset--color--accent-6);
+	border-radius: 0;
+	display: flex;
+	width: 100%;
+}
+
+.luxury-search-inline .wp-block-search__input {
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+	color: var(--wp--preset--color--contrast);
+	font-size: 0.9375rem;
+	padding: 0.625rem 0;
+}
+
+.luxury-search-inline .wp-block-search__input::placeholder {
+	color: var(--wp--preset--color--accent-4);
+	font-family: var(--wp--preset--font-family--cormorant-garamond);
+	font-style: italic;
+}
+
+.luxury-search-inline .wp-block-search__button {
+	background: transparent;
+	border: 1px solid var(--wp--preset--color--accent-1);
+	border-radius: 0;
+	color: var(--wp--preset--color--accent-1);
+	cursor: pointer;
+	font-size: 0.6875rem;
+	letter-spacing: 0.2em;
+	margin-left: 1rem;
+	padding: 0.625rem 1.5rem;
+	text-transform: uppercase;
+	transition: background 0.25s ease, color 0.25s ease;
+}
+
+.luxury-search-inline .wp-block-search__button:hover {
+	background: var(--wp--preset--color--accent-1);
+	color: var(--wp--preset--color--base);
 }
 
 /* 导航链接：金色下划线 hover 动效 */
