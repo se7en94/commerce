@@ -8,6 +8,11 @@ wp-content/uploads/
 wp-content/upgrade/
 wp-content/cache/
 
+# WP 官方/第三方主题（仅留在 docker 卷与本地，不进版本库；自研主题除外）
+wp-content/themes/*
+!wp-content/themes/index.php
+!wp-content/themes/twentytwentyfive-luxury
+
 # WordPress 核心（用 docker image 提供，不需要进版本库）
 # 如果你的部署是「整个 WP 目录都进仓库」则注释掉下面两条
 # wp-admin/

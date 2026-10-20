@@ -124,10 +124,10 @@
 
 | Task | 描述 | 验收标准 | 预估 |
 |---|---|---|---|
-| T-1.1 | `front-page.html` 模板 + Hero banner | 首页展示 hero 大图 + 3 列主推类目 | 4h |
+| ✅ T-1.1 | `front-page.html` 模板 + Hero banner | 首页展示 hero 大图 + 3 列主推类目 | 4h |
 | T-1.2 | `archive-product.html` 商品网格 | 4 列网格、hover 显价格、分页 | 4h |
 | T-1.3 | `single-product.html` 详情页 | 大图左 + 信息右，含 breadcrumb | 3h |
-| T-1.4 | `parts/header.html` + `parts/footer.html` | 顶部 nav + 底部 4 列链接 | 2h |
+| ✅ T-1.4 | `parts/header.html` + `parts/footer.html` | 顶部 nav + 底部 4 列链接 | 2h |
 | T-1.5 | `style.css` 视觉规范 | 极简白底 + 衬线标题字体 + 大留白 | 3h |
 | T-1.6 | `functions.php` 注册菜单/侧边栏/缩略图 | WP 后台可见菜单编辑器 | 1h |
 | T-1.7 | 移动端响应式 | iPhone 12/13 视口下布局不破 | 2h |
@@ -189,6 +189,10 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.1  front-page.html 首页模板上线（Hero/类目/精选商品/价值主张/寄卖CTA + AI 生成视觉素材）
+            注意：首页类目链接指向 /product-category/{handbags,watches,jewelry}/，需在 WP 后台建好这三个类目
+2026-10-20  完成 T-1.4  header.html / footer.html 定稿
+2026-10-20  完成 A8     git 历史清洁确认 + GitHub 首推（c2dd0ea）+ 主题目录实时挂载（docker-compose 增加 ./wp-content/themes 卷）
 2026-10-20  完成 A7  git 历史扫描确认零提交零泄露
 2026-10-20  完成 A6  pre-commit hook 安装并实测拦截
 2026-10-20  完成 A5  .env.example 全占位符化

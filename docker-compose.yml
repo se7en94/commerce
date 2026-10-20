@@ -34,6 +34,8 @@ services:
     volumes:
       - wp_data:/var/www/html
       - ./:/var/www/html/wp-content/plugins/woocommerce
+      # 主题实时挂载：宿主机编辑即时生效，无需 docker cp
+      - ./wp-content/themes:/var/www/html/wp-content/themes
     ports:
       - "8080:80"
 
