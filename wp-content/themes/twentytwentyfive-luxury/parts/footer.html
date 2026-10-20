@@ -54,7 +54,12 @@
 			<!-- wp:paragraph {"style":{"typography":{"fontFamily":"var(--wp--preset--font-family--cormorant-garamond)","fontSize":"1rem","fontStyle":"italic","lineHeight":"1.6"},"color":{"text":"var(--wp--preset--color--accent-4)"}}} -->
 			<p style="color:var(--wp--preset--color--accent-4);font-family:var(--wp--preset--font-family--cormorant-garamond);font-size:1rem;font-style:italic;line-height:1.6">Receive private previews and collector insights.</p>
 			<!-- /wp:paragraph -->
-			<!-- wp:search {"label":"Email","showLabel":false,"placeholder":"Your email","buttonText":"Subscribe","buttonPosition":"button-inside","style":{"typography":{"fontSize":"0.8125rem"}}} /-->
+			<!-- wp:html -->
+			<form class="luxury-newsletter" action="#" method="post" onsubmit="this.querySelector('button').textContent='Subscribed ✓'; this.querySelector('input').value=''; return false;">
+				<input type="email" name="email" placeholder="Your email" autocomplete="email" required aria-label="Email address"/>
+				<button type="submit">Subscribe</button>
+			</form>
+			<!-- /wp:html -->
 		</div>
 		<!-- /wp:column -->
 
@@ -63,10 +68,10 @@
 
 	<!-- wp:separator {"align":"wide","style":{"color":{"text":"var(--wp--preset--color--accent-6)"}}} /-->
 
-	<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between"},"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.1em","textTransform":"uppercase"},"color":{"text":"var(--wp--preset--color--accent-4)"}}} -->
-	<div class="wp-block-group alignwide has-text-color" style="color:var(--wp--preset--color--accent-4);display:flex;flex-wrap:wrap;justify-content:space-between;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase">
+	<!-- wp:group {"align":"wide","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","alignItems":"center"},"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.1em","textTransform":"uppercase"},"color":{"text":"var(--wp--preset--color--accent-4)"},"spacing":{"blockGap":"12px"}},"className":"luxury-footer-bottom"} -->
+	<div class="wp-block-group alignwide luxury-footer-bottom has-text-color" style="color:var(--wp--preset--color--accent-4);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;font-size:0.75rem;letter-spacing:0.1em;text-transform:uppercase">
 		<!-- wp:paragraph -->
-		<p>© <!-- wp:site-title {"level":0,"isLink":false,"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.15em"}}} /--></p>
+		<p>© 2026 VELORÉ · All Rights Reserved</p>
 		<!-- /wp:paragraph -->
 		<!-- wp:paragraph -->
 		<p>Crafted for Collectors</p>

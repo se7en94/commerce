@@ -190,6 +190,11 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.4.6  footer 修复：①版权行错乱（p 内嵌 site-title 块导致浏览器拆解）
+            → 改纯文本 © 2026 VELORÉ · All Rights Reserved + flex space-between 对齐；
+            ②订阅表单改 wp:html 静态 form（金色实心按钮 + 金线输入框，占位提交逻辑，
+            后续接 newsletter 服务）；移动端表单自适应全宽
+            踩坑⑧：不要在 wp:paragraph 里嵌套其他 block（site-title 等）——输出非法 HTML
 2026-10-20  完成 T-1.7.1  移动端抽屉菜单可读性修复：链接强制 #FAFAFA（对比度 11.55，WCAG AAA）、
             字号 1.25rem、间距 30px、关闭按钮亮色放大 28px
             踩坑⑦：theme.json 给 core/navigation 元素 link 定义的 text color 会以更高优先级

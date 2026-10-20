@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.0.9
+Version: 1.0.10
 Text Domain: tt5-luxury
 */
 
@@ -202,6 +202,70 @@ Text Domain: tt5-luxury
 .luxury-header .wc-block-mini-cart__button {
 	align-items: center;
 	line-height: 1;
+}
+
+/* ===== Footer ===== */
+
+/* Newsletter 表单：金线输入 + 金色实心按钮 */
+.luxury-newsletter {
+	display: flex;
+	align-items: stretch;
+	border-bottom: 1px solid var(--wp--preset--color--accent-6);
+	max-width: 360px;
+}
+
+.luxury-newsletter input {
+	background: transparent;
+	border: 0;
+	color: var(--wp--preset--color--contrast);
+	flex: 1;
+	font-size: 0.875rem;
+	min-width: 0;
+	padding: 0.625rem 0;
+}
+
+.luxury-newsletter input:focus {
+	outline: none;
+}
+
+.luxury-newsletter input::placeholder {
+	color: var(--wp--preset--color--accent-4);
+	font-family: var(--wp--preset--font-family--cormorant-garamond);
+	font-style: italic;
+}
+
+.luxury-newsletter button {
+	background: var(--wp--preset--color--accent-1);
+	border: 0;
+	color: var(--wp--preset--color--accent-3);
+	cursor: pointer;
+	font-size: 0.6875rem;
+	letter-spacing: 0.2em;
+	margin: 0.375rem 0;
+	padding: 0.625rem 1.25rem;
+	text-transform: uppercase;
+	transition: background 0.25s ease, color 0.25s ease;
+	white-space: nowrap;
+}
+
+.luxury-newsletter button:hover {
+	background: var(--wp--preset--color--base);
+	color: var(--wp--preset--color--accent-3);
+}
+
+/* 版权行：两端对齐、垂直居中、移动端换行留距 */
+.luxury-footer-bottom {
+	align-items: center;
+}
+
+.luxury-footer-bottom p {
+	margin: 0;
+}
+
+@media (max-width: 782px) {
+	.luxury-newsletter {
+		max-width: 100%;
+	}
 }
 
 /* ===== 搜索结果页 ===== */
