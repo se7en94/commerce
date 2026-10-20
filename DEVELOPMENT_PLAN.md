@@ -126,7 +126,7 @@
 |---|---|---|---|
 | ✅ T-1.1 | `front-page.html` 模板 + Hero banner | 首页展示 hero 大图 + 3 列主推类目 | 4h |
 | ✅ T-1.2 | `archive-product.html` 商品网格 | 4 列网格、hover 显价格、分页 | 4h |
-| T-1.3 | `single-product.html` 详情页 | 大图左 + 信息右，含 breadcrumb | 3h |
+| ✅ T-1.3 | `single-product.html` 详情页 | 大图左 + 信息右，含 breadcrumb | 3h |
 | ✅ T-1.4 | `parts/header.html` + `parts/footer.html` | 顶部 nav + 底部 4 列链接 | 2h |
 | T-1.5 | `style.css` 视觉规范 | 极简白底 + 衬线标题字体 + 大留白 | 3h |
 | T-1.6 | `functions.php` 注册菜单/侧边栏/缩略图 | WP 后台可见菜单编辑器 | 1h |
@@ -189,6 +189,7 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.3  single-product 详情页验收通过（breadcrumb + 55/45 两栏 + gallery + related products）
 2026-10-20  完成 T-1.2  archive-product 商品网格定稿（4 列 + hover 显价格 + 图片 4/3 裁切）+ style.css 视觉规范 v1
             踩坑①：WP 数据库 wp_posts 里 post_type='wp_template' 的自定义模板会覆盖主题 .html 文件
                    （站点编辑器保存过就会生成）。改主题模板后页面无变化时，先查 DELETE FROM wp_posts
