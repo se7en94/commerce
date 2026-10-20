@@ -1,29 +1,35 @@
-<!-- wp:group {"tagName":"header","align":"full","layout":{"type":"constrained","contentSize":"1600px"},"style":{"spacing":{"padding":{"top":"24px","bottom":"24px"},"blockGap":"16px"}},"className":"luxury-header"} -->
-<header class="wp-block-group alignfull luxury-header" style="padding-top:24px;padding-bottom:24px">
+<!-- wp:group {"tagName":"header","align":"full","layout":{"type":"constrained","contentSize":"1600px"},"style":{"spacing":{"padding":{"top":"24px","bottom":"16px"},"blockGap":"0px"}},"className":"luxury-header"} -->
+<header class="wp-block-group alignfull luxury-header" style="padding-top:24px;padding-bottom:16px">
 
-	<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","alignItems":"center"},"style":{"spacing":{"blockGap":"16px"}}} -->
-	<div class="wp-block-group" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center">
-		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","alignItems":"center"},"style":{"spacing":{"blockGap":"20px"}}} -->
-		<div class="wp-block-group" style="display:flex;flex-wrap:nowrap;align-items:center">
+	<!-- 主行：Logo 左 · 搜索居中 · 账户/购物车右 -->
+	<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","justifyContent":"space-between","alignItems":"center","verticalAlignment":"center"},"style":{"spacing":{"blockGap":"24px","padding":{"bottom":"20px"}}},"className":"luxury-header-toprow"} -->
+	<div class="wp-block-group luxury-header-toprow" style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:24px;padding-bottom:20px">
+
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","alignItems":"center"},"style":{"spacing":{"blockGap":"24px"},"layout":{"selfStretch":"fill","flexSize":"0"}},"className":"luxury-header-left"} -->
+		<div class="wp-block-group luxury-header-left" style="display:flex;flex-wrap:nowrap;align-items:center;gap:24px">
+			<!-- wp:site-title {"level":0,"textAlign":"center","style":{"typography":{"fontFamily":"var(--wp--preset--font-family--playfair-display)","fontSize":"1.5rem","fontWeight":"500","letterSpacing":"0.1em","textTransform":"uppercase","lineHeight":"1.1"},"color":{"text":"var(--wp--preset--color--contrast)"}},"className":"luxury-site-title"} /-->
+		</div>
+		<!-- /wp:group -->
+
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"center","alignItems":"center"},"style":{"spacing":{"blockGap":"0px"}},"className":"luxury-header-center"} -->
+		<div class="wp-block-group luxury-header-center" style="display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;gap:0">
 			<!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search","buttonText":"","buttonPosition":"button-inside","buttonUseIcon":true,"style":{"typography":{"fontSize":"0.75rem","letterSpacing":"0.1em"},"color":{"text":"var(--wp--preset--color--accent-4)"}},"className":"luxury-search"} /-->
 		</div>
 		<!-- /wp:group -->
 
-		<!-- wp:site-title {"level":0,"textAlign":"center","style":{"typography":{"fontFamily":"var(--wp--preset--font-family--playfair-display)","fontSize":"1.5rem","fontWeight":"500","letterSpacing":"0.1em","textTransform":"uppercase","lineHeight":"1.1"},"color":{"text":"var(--wp--preset--color--contrast)"}},"className":"luxury-site-title"} /-->
-
-		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"flex-end","alignItems":"center"},"style":{"spacing":{"blockGap":"20px"}}} -->
-		<div class="wp-block-group" style="display:flex;flex-wrap:nowrap;justify-content:flex-end;align-items:center">
-			<!-- wp:woocommerce/mini-cart {"hasHiddenPrice":false,"layoutStyle":"plain","openCartButton":{"hasHiddenBadge":false,"hasHiddenPrice":false,"pricePosition":"outside","style":{"typography":{"fontSize":"0.8125rem"}}},"style":{"typography":{"fontSize":"0.8125rem"},"spacing":{"blockGap":"8px"}}} /-->
+		<!-- wp:group {"layout":{"type":"flex","flexWrap":"nowrap","justifyContent":"flex-end","alignItems":"center"},"style":{"spacing":{"blockGap":"20px"},"layout":{"selfStretch":"fill","flexSize":"0"}},"className":"luxury-header-right"} -->
+		<div class="wp-block-group luxury-header-right" style="display:flex;flex-wrap:nowrap;justify-content:flex-end;align-items:center;gap:20px">
+			<!-- wp:woocommerce/customer-account {"displayStyle":"icon_only","iconStyle":"line","showLoginOption":true,"iconClass":"wc-block-customer-account__account-icon","style":{"typography":{"fontSize":"0.8125rem"}},"className":"luxury-account"} /-->
+			<!-- wp:woocommerce/mini-cart {"hasHiddenPrice":true,"layoutStyle":"plain","openCartButton":{"hasHiddenBadge":false,"hasHiddenPrice":true,"pricePosition":"outside","style":{"typography":{"fontSize":"0.8125rem"}}},"style":{"typography":{"fontSize":"0.8125rem"},"spacing":{"blockGap":"8px"}},"className":"luxury-cart"} /-->
 		</div>
 		<!-- /wp:group -->
+
 	</div>
 	<!-- /wp:group -->
 
-	<!-- wp:separator {"align":"full","style":{"color":{"text":"var(--wp--preset--color--accent-6)"},"spacing":{"margin":{"top":"8px","bottom":"12px"}}}} /-->
+	<!-- wp:separator {"align":"full","style":{"color":{"text":"var(--wp--preset--color--accent-6)"},"spacing":{"margin":{"top":"0px","bottom":"14px"}}}} /-->
 
-	<!-- wp:navigation {"ref":11,"__unstableLocation":"primary","overlayMenu":"mobile","layout":{"type":"flex","orientation":"horizontal"},"isResponsive":true,"align":"center","style":{"typography":{"fontSize":"0.75rem","fontWeight":"400","letterSpacing":"0.18em","textTransform":"uppercase"},"spacing":{"blockGap":"40px"}},"className":"luxury-main-nav"} /-->
-
-	<!-- wp:separator {"align":"full","style":{"color":{"text":"var(--wp--preset--color--accent-6)"},"spacing":{"margin":{"top":"12px","bottom":"0px"}}}} /-->
+	<!-- wp:navigation {"ref":11,"__unstableLocation":"primary","overlayMenu":"mobile","layout":{"type":"flex","justifyContent":"center","orientation":"horizontal"},"isResponsive":true,"style":{"typography":{"fontSize":"0.75rem","fontWeight":"400","letterSpacing":"0.18em","textTransform":"uppercase"},"spacing":{"blockGap":"40px"}},"className":"luxury-main-nav"} /-->
 
 </header>
 <!-- /wp:group -->

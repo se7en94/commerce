@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.0.2
+Version: 1.0.3
 Text Domain: tt5-luxury
 */
 
@@ -44,7 +44,39 @@ Text Domain: tt5-luxury
 
 /* ===== Header：极简奢华风 ===== */
 
+/* 三段式主行：左右列平分剩余空间，保证中间搜索框真正居中 */
+.luxury-header-toprow {
+	align-items: center;
+}
+
+.luxury-header-left,
+.luxury-header-right {
+	flex: 1 1 0;
+	min-width: 180px;
+}
+
+.luxury-header-right .wc-block-customer-account__link {
+	color: var(--wp--preset--color--accent-2);
+	display: inline-flex;
+	align-items: center;
+	line-height: 1;
+}
+
+.luxury-header-right .wc-block-customer-account__link:hover {
+	color: var(--wp--preset--color--accent-1);
+}
+
+.luxury-header-right .wc-block-customer-account__link svg {
+	width: 20px;
+	height: 20px;
+}
+
 /* 搜索框：去掉 WP 默认白色块，改为透明底 + 金色底线的极简样式 */
+.luxury-search {
+	width: 100%;
+	max-width: 320px;
+}
+
 .luxury-search .wp-block-search__inside-wrapper {
 	align-items: center;
 	background: transparent;
@@ -52,6 +84,7 @@ Text Domain: tt5-luxury
 	border-bottom: 1px solid var(--wp--preset--color--accent-6);
 	border-radius: 0;
 	display: flex;
+	width: 100%;
 }
 
 .luxury-search .wp-block-search__input {
@@ -61,8 +94,9 @@ Text Domain: tt5-luxury
 	color: var(--wp--preset--color--contrast);
 	font-size: 0.8125rem;
 	letter-spacing: 0.05em;
-	min-width: 210px;
+	min-width: 0;
 	padding: 0.5rem 0;
+	width: 100%;
 }
 
 .luxury-search .wp-block-search__input::placeholder {
@@ -74,6 +108,8 @@ Text Domain: tt5-luxury
 
 .luxury-search .wp-block-search__button {
 	background: transparent;
+	border: 0;
+	border-radius: 0;
 	box-shadow: none;
 	color: var(--wp--preset--color--accent-2);
 	padding: 0.25rem 0 0.25rem 0.75rem;

@@ -189,6 +189,13 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.4.2  header 重构为经典三段式（Logo 左 / 搜索真居中 / 账户+购物车右），
+            导航改 justifyContent:center 居中
+            踩坑④：WooCommerce Block Hooks 会把 customer-account 块自动插到 core/navigation
+                   之后——header 里未显式声明时它会错位渲染。解决：模板里显式放置
+                   woocommerce/customer-account（显式存在后 hook 不再注入）
+            踩坑⑤：theme.json 的全局 button element 样式（金边）会污染搜索按钮，
+                   需在 style.css 显式 border:0 覆盖
 2026-10-20  完成 T-1.4.1  header 修复：搜索框改透明底金色下划线极简样式；主导航重建为
             Shop/Handbags/Watches/Jewelry/Sell With Us（替换 WP 默认 page-list）
             数据库侧变更（不在 git 里）：ID=11 wp_navigation 重写；新建 product_cat
