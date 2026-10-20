@@ -129,9 +129,9 @@
 | ✅ T-1.3 | `single-product.html` 详情页 | 大图左 + 信息右，含 breadcrumb | 3h |
 | ✅ T-1.4 | `parts/header.html` + `parts/footer.html` | 顶部 nav + 底部 4 列链接 | 2h |
 | ✅ T-1.8 | `templates/search.html` 搜索结果页 | 3 列结果网格 + 无结果重搜表单 | 2h |
-| T-1.5 | `style.css` 视觉规范 | 极简白底 + 衬线标题字体 + 大留白 | 3h |
+| ✅ T-1.5 | `style.css` 视觉规范 | Noir 暗底定稿（替代原白底方案）+ 衬线标题 + 大留白 | 3h |
 | ✅ T-1.6 | `functions.php` 注册菜单/侧边栏/缩略图 | WP 后台可见菜单编辑器 | 1h |
-| T-1.7 | 移动端响应式 | iPhone 12/13 视口下布局不破 | 2h |
+| ✅ T-1.7 | 移动端响应式 | iPhone 12/13 视口下布局不破 | 2h |
 
 ### Phase 2 — 商品数据
 
@@ -190,6 +190,19 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.7  移动端验收通过（390x844 实测）：全站零横向溢出、网格 2 列、抽屉/搜索/
+            详情页正常。顺手修复 3 个发现项：①桌面端 hover 价格作用域错误（luxury-product-card
+            落在整页 UL 上，hover 任意处全网格显价 → 选择器改 > li 定位到单品）
+            ②汉堡/抽屉关闭/搜索图标点击热区外扩至 ≥44px（负 margin/伪元素保持视觉不变）
+            ③newsletter 按钮加高至 ~44px。主题版本 bump 1.0.13
+            踩坑⑨：woocommerce/product-template 的 className 渲染在包裹所有商品的 UL 上，
+                   per-item 样式必须用 .luxury-product-card > li
+            备注：headless 环境 PPCP client-token 500 = "Could not validate nonce"（无会话
+            cookie），非站点问题，T-0.3 真实浏览器复测；Google Fonts woff2 404 为 headless
+            网络环境噪音，本机直连 fonts.gstatic.com 返回 200
+2026-10-20  完成 T-1.5  视觉规范定稿：Noir 暗底（#0A0A0A）+ Ivory/Gold 双强调 + Playfair Display
+            （标题）/ Cormorant Garamond（斜体副文）/ Inter（正文）+ 零圆角按钮 + clamp 大留白
+            （原「极简白底」方案随多轮设计迭代被 Noir 替代，规范散落 style.css v1.0.13 全文）
 2026-10-20  完成 T-1.6  functions.php 主题能力补全：title-tag / custom-logo / html5、
             woocommerce 缩略图 600x450 4/3 裁切（与商品网格比例一致）、product_grid 默认 4 列；
             主题版本 bump 1.0.12

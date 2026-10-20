@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.0.12
+Version: 1.0.13
 Text Domain: tt5-luxury
 */
 
@@ -15,28 +15,30 @@ Text Domain: tt5-luxury
    ============================================ */
 
 /* ----- Product cards (archive grid) -----
-   验收 T-1.2：默认只显示图 + 标题，hover 时淡入价格与加购按钮 */
-.luxury-product-card .luxury-product-price,
-.luxury-product-card .luxury-product-button {
+   验收 T-1.2：默认只显示图 + 标题，hover 时淡入价格与加购按钮
+   注意：luxury-product-card 落在包裹全部商品的 UL 上，
+   per-item 效果必须用 > li 选择到单个商品 */
+.luxury-product-card > li .luxury-product-price,
+.luxury-product-card > li .luxury-product-button {
 	opacity: 0;
 	transform: translateY(6px);
 	transition: opacity 0.35s ease, transform 0.35s ease;
 }
 
-.luxury-product-card:hover .luxury-product-price,
-.luxury-product-card:hover .luxury-product-button,
-.luxury-product-card:focus-within .luxury-product-price,
-.luxury-product-card:focus-within .luxury-product-button {
+.luxury-product-card > li:hover .luxury-product-price,
+.luxury-product-card > li:hover .luxury-product-button,
+.luxury-product-card > li:focus-within .luxury-product-price,
+.luxury-product-card > li:focus-within .luxury-product-button {
 	opacity: 1;
 	transform: translateY(0);
 }
 
 /* 图片 hover 轻微放大，保持极简质感 */
-.luxury-product-card .luxury-product-image img {
+.luxury-product-card > li .luxury-product-image img {
 	transition: transform 0.6s ease;
 }
 
-.luxury-product-card:hover .luxury-product-image img {
+.luxury-product-card > li:hover .luxury-product-image img {
 	transform: scale(1.03);
 }
 
@@ -73,12 +75,20 @@ Text Domain: tt5-luxury
 	cursor: pointer;
 	display: inline-flex;
 	padding: 4px;
+	position: relative;
 	transition: color 0.25s ease, transform 0.25s ease;
 }
 
 .luxury-search-toggle:hover {
 	color: var(--wp--preset--color--accent-1);
 	transform: scale(1.08);
+}
+
+/* 触屏点击热区：伪元素外扩到 ≥44px，不改变视觉尺寸 */
+.luxury-search-toggle::after {
+	content: "";
+	position: absolute;
+	inset: -6px;
 }
 
 /* 全屏搜索模态框（原生 <dialog>） */
@@ -242,7 +252,7 @@ Text Domain: tt5-luxury
 	font-size: 0.6875rem;
 	letter-spacing: 0.2em;
 	margin: 0.375rem 0;
-	padding: 0.625rem 1.25rem;
+	padding: 0.875rem 1.5rem;
 	text-transform: uppercase;
 	transition: background 0.25s ease, color 0.25s ease;
 	white-space: nowrap;
@@ -368,6 +378,19 @@ Text Domain: tt5-luxury
 	fill: var(--wp--preset--color--contrast);
 }
 
+/* 汉堡与抽屉关闭按钮：padding 外扩点击热区至 44px，负 margin 保持视觉位置不变 */
+.luxury-main-nav .wp-block-navigation__responsive-container-open {
+	cursor: pointer;
+	padding: 10px;
+	margin: -10px;
+}
+
+.luxury-main-nav .wp-block-navigation__responsive-container-close {
+	cursor: pointer;
+	padding: 8px;
+	margin: -8px;
+}
+
 .luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open {
 	background-color: #0A0A0A !important;
 	color: var(--wp--preset--color--base);
@@ -469,7 +492,7 @@ select:focus-visible {
 
 /* 移动端：商品卡片间距收紧，价格在触屏上始终可见（无 hover） */
 @media (max-width: 782px) {
-	.luxury-product-card .luxury-product-price {
+	.luxury-product-card > li .luxury-product-price {
 		opacity: 1;
 		transform: none;
 	}
