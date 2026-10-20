@@ -190,6 +190,10 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.4.5  header 顶部呼吸感 + 图标统一：padding-top 24px→clamp(28,3.5vw,48)、
+            bottom 16px→clamp(16,2vw,28)；右侧三图标统一 32px 视觉高度（flex center）
+            踩坑⑥：block 模板文件里 static block 渲染以 HTML 内联 style 为准，JSON 注释里的
+                   spacing 仅供编辑器——改间距必须同步改 HTML 部分，否则前端无变化
 2026-10-20  完成 T-1.4.4  header 垂直居中修复：中屏（~1000px）下图标组会 flex-wrap 掉到第二行。
             修复=压缩间距（toprow gap 32→16、左组 gap 40→24、nav gap 32→24）+
             990px 断点强制汉堡（CSS 覆盖 WP 原生 600px 断点）+ 1200px 以下 logo 缩到 1.25rem
