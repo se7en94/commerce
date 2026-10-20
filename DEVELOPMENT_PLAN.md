@@ -189,6 +189,12 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-1.4.1  header 修复：搜索框改透明底金色下划线极简样式；主导航重建为
+            Shop/Handbags/Watches/Jewelry/Sell With Us（替换 WP 默认 page-list）
+            数据库侧变更（不在 git 里）：ID=11 wp_navigation 重写；新建 product_cat
+            handbags/watches/jewelry；新建 /sell-with-us/ 占位页；flush rewrite_rules
+            踩坑③：浏览器 disk cache 会缓存页面和 CSS——改完样式看不到效果时先硬刷新，
+                   主题版本号 bump 可强制客户端拉新 style.css（当前 1.0.1）
 2026-10-20  完成 T-1.3  single-product 详情页验收通过（breadcrumb + 55/45 两栏 + gallery + related products）
 2026-10-20  完成 T-1.2  archive-product 商品网格定稿（4 列 + hover 显价格 + 图片 4/3 裁切）+ style.css 视觉规范 v1
             踩坑①：WP 数据库 wp_posts 里 post_type='wp_template' 的自定义模板会覆盖主题 .html 文件

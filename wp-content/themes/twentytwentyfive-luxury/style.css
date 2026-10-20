@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.0.0
+Version: 1.0.1
 Text Domain: tt5-luxury
 */
 
@@ -41,6 +41,83 @@ Text Domain: tt5-luxury
 }
 
 /* ----- 全局细节 ----- */
+
+/* ===== Header：极简奢华风 ===== */
+
+/* 搜索框：去掉 WP 默认白色块，改为透明底 + 金色底线的极简样式 */
+.luxury-search .wp-block-search__inside-wrapper {
+	align-items: center;
+	background: transparent;
+	border: 0;
+	border-bottom: 1px solid var(--wp--preset--color--accent-6);
+	border-radius: 0;
+	display: flex;
+}
+
+.luxury-search .wp-block-search__input {
+	background: transparent;
+	border: 0;
+	box-shadow: none;
+	color: var(--wp--preset--color--contrast);
+	font-size: 0.8125rem;
+	letter-spacing: 0.05em;
+	min-width: 210px;
+	padding: 0.5rem 0;
+}
+
+.luxury-search .wp-block-search__input::placeholder {
+	color: var(--wp--preset--color--accent-4);
+	font-size: 0.6875rem;
+	letter-spacing: 0.2em;
+	text-transform: uppercase;
+}
+
+.luxury-search .wp-block-search__button {
+	background: transparent;
+	box-shadow: none;
+	color: var(--wp--preset--color--accent-2);
+	padding: 0.25rem 0 0.25rem 0.75rem;
+}
+
+.luxury-search .wp-block-search__button svg {
+	fill: var(--wp--preset--color--accent-2);
+}
+
+/* mini-cart 与同行元素垂直对齐 */
+.luxury-header .wc-block-mini-cart__button {
+	align-items: center;
+	line-height: 1;
+}
+
+/* 导航链接：金色下划线 hover 动效 */
+.luxury-main-nav .wp-block-navigation-item__content {
+	padding: 0.25rem 0;
+	position: relative;
+}
+
+.luxury-main-nav .wp-block-navigation-item__content::after {
+	background: var(--wp--preset--color--accent-1);
+	content: "";
+	display: block;
+	height: 1px;
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.3s ease;
+}
+
+.luxury-main-nav .wp-block-navigation-item__content:hover::after,
+.luxury-main-nav .current-menu-item > .wp-block-navigation-item__content::after {
+	transform: scaleX(1);
+}
+
+/* 移动端汉堡按钮与全屏菜单使用暗色 */
+.luxury-main-nav .wp-block-navigation__responsive-container-open svg {
+	fill: var(--wp--preset--color--contrast);
+}
+
+.luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open {
+	background-color: var(--wp--preset--color--accent-3) !important;
+}
 
 /* 文本选中态用品牌金 */
 ::selection {
