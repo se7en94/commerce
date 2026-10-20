@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.0.5
+Version: 1.0.6
 Text Domain: tt5-luxury
 */
 
@@ -284,6 +284,34 @@ Text Domain: tt5-luxury
 
 .luxury-main-nav .wp-block-navigation__responsive-container.is-menu-open {
 	background-color: var(--wp--preset--color--accent-3) !important;
+}
+
+/* 中屏断点：990px 以下强制汉堡菜单，防止图标组换行错位 */
+@media (max-width: 990px) {
+	.luxury-main-nav .wp-block-navigation__responsive-container-open {
+		display: block;
+	}
+
+	.luxury-main-nav .wp-block-navigation__responsive-container:not(.is-menu-open) {
+		display: none;
+	}
+}
+
+@media (min-width: 991px) {
+	.luxury-main-nav .wp-block-navigation__responsive-container-open {
+		display: none;
+	}
+
+	.luxury-main-nav .wp-block-navigation__responsive-container:not(.is-menu-open) {
+		display: flex;
+	}
+}
+
+/* 中屏压缩：logo 与导航字号收紧 */
+@media (max-width: 1200px) {
+	.luxury-header .luxury-site-title {
+		font-size: 1.25rem !important;
+	}
 }
 
 /* 文本选中态用品牌金 */
