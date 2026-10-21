@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.1.0
+Version: 1.2.0
 Text Domain: tt5-luxury
 */
 
@@ -214,62 +214,47 @@ Text Domain: tt5-luxury
 	line-height: 1;
 }
 
-/* 语言切换器：极简语言码横排（EN / 中文 …），与图标组同高同基线 */
-.luxury-lang-switcher ul {
+/* 语言切换器：下拉选择（Noir 风格，与图标组同高同基线） */
+.luxury-lang-switcher {
 	display: flex;
-	flex-wrap: nowrap;
-	align-items: center;
-	gap: 0;
-	margin: 0;
-	padding: 0;
-	list-style: none;
-}
-
-.luxury-lang-switcher li {
-	margin: 0;
-	padding: 0 10px;
-	line-height: 32px;
-	list-style: none;
-}
-
-.luxury-lang-switcher li:not(:last-child) {
-	border-right: 1px solid color-mix(in srgb, var(--wp--preset--color--accent-6) 35%, transparent);
-}
-
-.luxury-lang-switcher a {
-	display: inline-flex;
 	align-items: center;
 	height: 32px;
-	font-family: var(--wp--preset--font-family--inter);
-	font-size: 0.6875rem;
-	font-weight: 400;
-	letter-spacing: 0.14em;
-	text-transform: uppercase;
-	text-decoration: none;
-	color: var(--wp--preset--color--contrast);
-	opacity: 0.55;
-	transition: opacity 0.2s ease;
 }
 
-.luxury-lang-switcher a:hover,
-.luxury-lang-switcher a:focus {
-	opacity: 1;
-}
-
-/* 当前语言：金色 + 高亮 */
-.luxury-lang-switcher .current-lang a {
-	color: var(--wp--preset--color--accent-2);
-	opacity: 1;
-	font-weight: 500;
-}
-
-/* Polylang block 输出的默认圆点/边框一律去掉，保持极简 */
-.luxury-lang-switcher ul,
-.luxury-lang-switcher li,
-.luxury-lang-switcher a {
+.luxury-lang-switcher select {
+	appearance: none;
+	-webkit-appearance: none;
+	height: 32px;
+	padding: 0 22px 0 2px;
+	background: transparent;
+	border: 0;
+	border-bottom: 1px solid color-mix(in srgb, var(--wp--preset--color--accent-6) 35%, transparent);
 	border-radius: 0;
 	box-shadow: none;
-	background: none;
+	font-family: var(--wp--preset--font-family--inter);
+	font-size: 0.6875rem;
+	font-weight: 500;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--wp--preset--color--accent-2);
+	cursor: pointer;
+	transition: border-color 0.2s ease;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='6' viewBox='0 0 9 6'%3E%3Cpath d='M1 1l3.5 3.5L8 1' fill='none' stroke='%23E8D5A8' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 4px center;
+}
+
+.luxury-lang-switcher select:hover,
+.luxury-lang-switcher select:focus {
+	border-bottom-color: var(--wp--preset--color--accent-2);
+	outline: none;
+}
+
+/* 下拉展开列表用系统默认配色，保证可读性 */
+.luxury-lang-switcher option {
+	color: #111;
+	background: #fff;
+	text-transform: none;
 }
 
 /* ===== Footer ===== */

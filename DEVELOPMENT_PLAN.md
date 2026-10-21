@@ -190,7 +190,32 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
-2026-10-21  完成 T-3.4  多语言基础设施上线（Polylang 3.9 免费版，Docker 内手动安装激活）：
+2026-10-21  修订 T-3.4  多语言体验升级（客户需求）：①切换器从语言码横排改为下拉选择
+            （原生 select，Noir 风格化：透明底/金色文字/细下划线/自定义 chevron）；
+            ②页面内容随语言真正切换，四层实现：
+            a. WooCommerce/WP UI 字符串——5 locale 语言包手动安装（wp-admin 在线装 zh_CN
+               成功、其余 4 个走 translations API zip 手动解包，wp-content/languages/），
+               商品页 加入购物车/成色 标签已随 locale 输出
+            b. 导航——每语言一个 wp_navigation post（velore_nav_ids option），mu-plugin
+               pre_render_block 按 pll_current_language 换 ref
+            c. 首页/footer——front-page-{lang}.html / footer-{lang}.html 变体（生成脚本
+               str_replace 翻译映射），mu-plugin 分别在 template_include /
+               pre_render_block(template-part) 接管；EN 始终走原文件零开销
+            d. 页面——Shop/My account/Sell With Us 翻译页已建并 pll_save_post_translations
+               关联；类目术语 6 语言关联；30 商品 ×5 语言翻译已建（150 个新商品，
+               short desc 成色/配件词条映射翻译，meta/特色图/类目/属性全拷贝）
+            ③修复：footer 导航 URL 是 block 注释属性格式 url":"/shop/"，只替换 href=" 会
+            漏掉（踩坑⑰：block 变体翻译必须同时处理 href= 与注释属性 url": 两种格式）；
+            类目翻译 slug 是 handbags-zh，链接必须指向 -zj 后缀 slug 而非原 slug 加前缀；
+            zh 页出现「无 header.php 的主题已废弃」通知——block 主题子主题补 header.php/
+            footer.php shim（block_template_part）解决（踩坑⑱）
+            验收：浏览器 4/4（下拉渲染/zh 内容全中文化/footer 链接/手袋类目页中文 grid），
+            curl 复核 en 页零 Deprecated、zh 页 html lang=zh-CN；30 个 zh 商品可见
+            mu-plugin 新增 velore-i18n.php（v1.0.0，语言模板切换）；主题 v1.2.0
+            已知边界：商品长描述与成色属性值仍是英文（词条级翻译属运营工作）；
+            /zh/ 会 301 到 /zh/shop-zh/（zh 首页=Shop 翻译页，与 EN page_on_front 结构
+            一致，canonical 行为，不影响体验）
+2026-10-21  修订 T-3.4  多语言基础设施上线（Polylang 3.9 免费版，Docker 内手动安装激活）：
             6 语言 en(默认)/zh/es/de/pt/fr，URL 前缀模式 /{lang}/（默认语言无前缀）；
             product/product_cat/product_tag 已启用翻译；全部存量内容（30 商品、3 类目、
             77 posts）已挂 en，避免语言过滤后前台消失；清理 WC 样品遗留空类目 7 个
