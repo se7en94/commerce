@@ -176,6 +176,8 @@
 
 ### Phase 6 — 生产部署（依赖 B1–B5）
 
+> 检查用例与验收标准：[07-Phase6-生产部署测试检查清单.md](file:///Users/se7en/Downloads/woocommerce/deliverables/07-Phase6-生产部署测试检查清单.md)
+
 | Task | 描述 | 预估 |
 |---|---|---|
 | T-6.1 | 域名 + DNS + Cloudflare | 0.5d |
@@ -192,6 +194,15 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  产出 T-6.x  部署验收文档 deliverables/07-Phase6-生产部署测试检查清单.md：
+            按 T-6.1~T-6.8 展开为 40+ 可勾选检查项 + 上线后 24–48h 监控 + 退出/
+            回滚标准。与 05/06 分工：05 管切换操作、06 管支付测试、07 管部署验收。
+            项目特定项：Cloudflare 动态路径绕过缓存清单（cart/checkout/wp-json/
+            wc-api）+ Rocket Loader 必关（破坏 PayPal 按钮 JS）；迁移完整性含
+            Polylang 翻译关联、woo_shippment_provider 承运商表、邀请码表；
+            测试数据清理专项（订单 #71/#442、Test Buyer、user#13、店铺地址占位）；
+            生产密钥 grep 扫描（client_secret 零命中）；上线后 webhook/GA4/Pixel/
+            PHP Fatal/邮件投递五项监控
 2026-10-21  产出 T-5.x  测试用例文档 deliverables/06-Phase5-PayPal测试检查清单.md：
             按 T-5.1~T-5.4 展开为 23 个可勾选用例 + 前置条件 7 项 + 测试记录总表 +
             失败排查表 + 退出/回滚标准。与 05 清单的分工：05 管「怎么切」，
