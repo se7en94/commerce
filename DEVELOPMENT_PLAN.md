@@ -164,7 +164,8 @@
 
 ### Phase 5 — 硬骨头测试（必须真实环境）
 
-> 详见 [05-PayPal-sandbox到prod切换清单.md](file:///Users/se7en/Downloads/woocommerce/deliverables/05-PayPal-sandbox到prod切换清单.md)
+> 操作步骤：[05-PayPal-sandbox到prod切换清单.md](file:///Users/se7en/Downloads/woocommerce/deliverables/05-PayPal-sandbox到prod切换清单.md)
+> 测试用例与验收标准：[06-Phase5-PayPal测试检查清单.md](file:///Users/se7en/Downloads/woocommerce/deliverables/06-Phase5-PayPal测试检查清单.md)
 
 | Task | 描述 | 预估 |
 |---|---|---|
@@ -191,6 +192,14 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  产出 T-5.x  测试用例文档 deliverables/06-Phase5-PayPal测试检查清单.md：
+            按 T-5.1~T-5.4 展开为 23 个可勾选用例 + 前置条件 7 项 + 测试记录总表 +
+            失败排查表 + 退出/回滚标准。与 05 清单的分工：05 管「怎么切」，
+            06 管「测什么、怎么算过」。关键设计：①T-5.2 明确测的是 PayPal 侧
+            钱包币种转换而非站内多币种结账（CURCY 结账恒 USD 是前提，避免误测）；
+            ②T-5.4 原子化压测 9 用例（幂等重放/乱序/并发/中断恢复/金额篡改/
+            库存原子性），幂等与库存失败列为上线阻断项（零容忍）；③T-5.3 资金
+            留存演练闭环到 B4 书面签收
 2026-10-21  完成 T-4.4  SEO 基础（Yoast SEO 28.7 容器内安装，不入 git）：
             ①sitemap：Yoast 接管（sitemap_index.xml → post/page/product/
             product_cat 子表，product-sitemap 181 URL 含六语言商品）；robots.txt
