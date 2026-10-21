@@ -149,9 +149,9 @@
 | ✅ T-3.1 | **自定义订单状态**「待向供应商付款」 | 注册 `wc-pending-supplier` 状态，插入 processing 之后 | 2h |
 | ✅ T-3.2 | **邀请码注册**（方案 B）| Custom Registration Fields 插件 + `woocommerce_register_post` hook 校验；无效码拒绝注册 | 6h |
 | ✅ T-3.3 | 邀请码管理后台 | 管理员能生成/作废/查看使用记录 | 4h |
-| T-3.4 | **多语言**（Polylang 免费版）| 英/中/西/德/葡/法 6 语言切换；商品可逐语言翻译 | 8h |
+| T-3.4 | ~~**多语言**（Polylang 免费版）~~ ✅ 完成（6 语言 + 内容随语言切换，见 CHANGELOG）| 英/中/西/德/葡/法 6 语言切换；商品可逐语言翻译 | 8h |
 | T-3.5 | ~~**多币种**（CURCY 或 Aelia）~~ ✅ 完成（CURCY 免费版 + velore-currency.php，见 CHANGELOG）| USD/CAD/SGD/EUR 切换，汇率自动 | 3h |
-| T-3.6 | **物流追踪**（Advanced Shipment Tracking）| 输单号自动识别承运商 + 抓轨迹 | 3h |
+| T-3.6 | ~~**物流追踪**（Advanced Shipment Tracking）~~ ✅ 完成（AST 免费版 v4.0.4，见 CHANGELOG）| 输单号自动识别承运商 + 抓轨迹 | 3h |
 
 ### Phase 4 — 营销与分析
 
@@ -190,6 +190,20 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  完成 T-3.6  物流追踪（AST 免费版 woo-advanced-shipment-tracking v4.0.4，
+            容器内安装，不入 git）：1084 家承运商从 TrackShip 公开 API 同步入库
+            （api.trackship.com/v1/shipping_carriers/all）；后台订单页 Shipment Tracking
+            面板原生兼容 HPOS。E2E 全通（订单 #71）：pending-supplier 状态订单加追踪
+            （FedEx 774912345678）→ 订单自动流转 completed（add_tracking_item 的
+            status_shipped=1 路径，即业务流「供应商发货→完成」）；客户 view-order 页
+            渲染单号/承运商/追踪链接，My Account 订单列表出现 Track 按钮。
+            能力边界：wc-shipped 状态与单号自动识别承运商是 Pro/TrackShip（付费 SaaS）
+            功能，免费版为 1084 家下拉手选 + 追踪链接直达承运商官网；completed 邮件
+            含追踪信息（免费）但本地无 SMTP（已知部署项）。踩坑㉓：AST 激活后的承运商
+            种子是 Action Scheduler 异步 + 远程拉取，激活后立查 providers 为 0——需同步
+            跑 ast_insert_shipping_providers() + ast_insert_shipping_provider()；表名是
+            woo_shippment_provider（Zorem 拼写）非直觉的 shipment_providers。
+            演示数据：订单 #71 保留 FedEx 追踪项（后台订单页可直接查看效果）
 2026-10-21  完成 T-3.5  多币种（CURCY 免费版 2.1.1 + velore-currency.php v1.0.0）：
             5 币种 USD/EUR/CAD/SGD/BRL，基准 USD（修复遗留 HKD 基准设置）；语言→货币
             自动映射（en/zh→USD，es/de/fr→EUR，pt→BRL），手动 ?currency= 切换后写 30 天
