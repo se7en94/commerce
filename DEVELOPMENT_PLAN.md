@@ -75,34 +75,41 @@
 
 ---
 
-## 3. 当前状态快照（截至 2026-10-20）
+## 3. 当前状态快照（截至 2026-10-21）
+
+### 总体进度
+
+- **Phase 0–4 开发任务全部完成**（T-0.2 ngrok webhook 增强验证除外，见下）
+- 交付文档：deliverables/ 01–07（05 切换操作 / 06 支付测试 / 07 部署验收）
+- 最新 commit：2a1ee82，工作区干净，全部推送 GitHub main
+- 主题版本 1.0.6；mu-plugins 九件（邀请码/订单状态/i18n/货币/像素/品牌化/邮件依赖/vendor-libs）
 
 ### 已完成 ✅
 
 | # | 任务 | 备注 |
 |---|---|---|
-| A1 | docker-compose 本地环境跑通 | WP + MySQL 8 容器 26h+ 稳定 |
-| A2 | WooCommerce 插件源码 vendored | `includes/ templates/ src/ woocommerce.php` |
-| A3 | PayPal sandbox 下单链路通 | 测试买家付款 → WP 后台可见订单 |
-| A4 | `configure_ppcp.php` 重构 | 从环境变量读凭证，含 wp-load bootstrap |
-| A5 | `.env` / `.env.example` / `.gitignore` 三件套 | example 全占位符 |
-| A6 | pre-commit hook 密钥扫描 | 已实测拦截 |
-| A7 | git 历史扫描 | **零提交，零泄露风险** |
-| A8 | 主题骨架 | `twentytwentyfive-luxury/` 仅有 functions/style/theme.json + 空 parts/templates |
-| A9 | 客户回复需求清单 | [奢侈品独立站需求确认清单-回复-VELORÉ.txt](file:///Users/se7en/Downloads/woocommerce/deliverables/奢侈品独立站需求确认清单-回复-VELORÉ.txt) |
+| A1–A9 | 环境基线 | docker-compose / vendored Woo / sandbox 下单通 / PPCP 脚本 / .env 三件套 / pre-commit / git 零泄露 / 主题骨架 / 客户需求清单 |
+| Phase 1 | 主题与视觉 | 全部 8 任务：Noir 暗底 + 金色定稿、移动端响应式、搜索页 |
+| Phase 2 | 商品数据 | 全部 4 任务：30 个种子商品、导入脚本、类目树、属性 |
+| Phase 3 | 核心非标功能 | 全部 6 任务：pending-supplier 状态、邀请码闭环（6 位码/管理页/三档模式）、六语言、多币种、物流追踪 |
+| Phase 4 | 营销与分析 | 全部 4 任务：GA4 四事件、Meta Pixel 五事件、邮件 Noir 品牌化（含 Emogrifier 修复）、Yoast SEO 全套 |
 
-### 进行中 🔄
-无
+### 未完事项（本地可做，不阻塞）
 
-### 阻塞中 ⛔
+| # | 任务 | 说明 |
+|---|---|---|
+| T-0.2 | ngrok webhook 闭环 | sandbox 订单状态自动流转依赖 webhook，本地 localhost 收不到；可用 ngrok 隧道补验，或直接并入 Phase 5 生产测试 |
+| T-0.4/0.5 | sandbox 退款/拒付兜底 | 同上依赖 webhook，已在 06 清单 T-5.x 覆盖生产用例 |
+
+### 阻塞中 ⛔（只阻塞 Phase 5/6，开发已全部完成）
 
 | # | 卡点 | 等谁 | 影响 |
 |---|---|---|---|
-| B1 | 客户开通 PayPal 真实商户号 | 客户 + PayPal 承保审核（1–3 周）| Phase 4 全部 |
-| B2 | 客户提供品牌授权材料 | 客户 | 支付通道审核 |
-| B3 | 客户确认结算币种 | 客户 | 多币种插件配置 |
-| B4 | 客户书面同意「21 天资金留存」风险 | 客户 | 上线签收 |
-| B5 | 客户确认 WooCommerce（否决 Next.js）| 客户 | 整体方向（已默认按 Woo 推进）|
+| B1 | 客户开通 PayPal 真实商户号 | 客户 + PayPal 承保审核（1–3 周）| Phase 5 测试 + Phase 6 上线（硬瓶颈，建议客户立即启动）|
+| B2 | 客户提供品牌授权材料 | 客户 | 支付通道审核（B1 前置）|
+| B3 | 客户确认结算币种 | 客户 | 生产 CURCY 配置（本地已按 USD 基准推进）|
+| B4 | 客户书面同意「21 天资金留存」风险 | 客户 | 上线签收文档 |
+| B5 | 客户确认 WooCommerce | 客户 | 已默认按 Woo 推进，待正式确认 |
 
 ---
 
