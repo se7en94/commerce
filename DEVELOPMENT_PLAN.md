@@ -139,7 +139,7 @@
 |---|---|---|---|
 | ✅ T-2.1 | 整理 30 个种子商品（含图/价/库存）| `sample-data/products.csv` | 4h |
 | ✅ T-2.2 | `import-products.php` 完善 | 跑一遍能导入全部 30 个商品 | 2h |
-| T-2.3 | 商品类目树（品牌 → 类目 → 商品）| WP 后台类目树清晰 | 1h |
+| ✅ T-2.3 | 商品类目树（品牌 → 类目 → 商品）| WP 后台类目树清晰 | 1h |
 | T-2.4 | 商品属性（尺寸/颜色/材质）| 详情页能选变体 | 2h |
 
 ### Phase 3 — 核心非标功能
@@ -190,6 +190,13 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-2.3  类目树 + 品牌归档上线：Handbags(12)/Watches(9)/Jewelry(9) 归属正确；
+            26 个品牌词项入 pa_brand，详情页显示 Brand 属性行；品牌归档基址改为 /designer/{brand}
+            （/brand/chanel/ 已通）。import-products.php 修复：属性导入原来只对 variable 类型
+            生效 → simple 商品全被跳过，改为全类型导入（is_variation 按类型设置）
+            踩坑⑪：WooCommerce 9.4+ 原生 Brands（product_brand）默认也占 /brand/ rewrite base，
+                   与自建 pa_brand 撞 slug，且原生规则优先匹配 → pa_brand 归档 404。
+                   解决：woocommerce_taxonomy_args_pa_brand 过滤器把基址改成 designer
 2026-10-20  完成 T-2.1/T-2.2  30 个种子商品上线：sample-data/products.csv（12 包/9 表/9 珠宝，
             寄卖逻辑每件库存 1，含 Brand 属性 + 2 个折价品 + 4 个 featured）；生成 6 张 Noir
             风格商品占位图（1840x1380，两次 sips 裁剪去水印）入主题 assets，30 商品轮换复用；

@@ -154,8 +154,8 @@ foreach ($rows as $idx => $row) {
 		echo "[$idx] Created ($product_type): $name (ID=$new_id, SKU=$sku)\n";
 		$created++;
 
-		if ($product_type === 'variable' && !empty($row['Attribute 1 name'])) {
-			woo_create_attributes($new_id, $row);
+		if (!empty($row['Attribute 1 name'])) {
+			woo_create_attributes($new_id, $row, $product_type === 'variable');
 		}
 	} else {
 		echo "[$idx] FAILED: $name\n";
@@ -242,7 +242,7 @@ function woo_import_remote_image($url, $name)
 	return $id;
 }
 
-function woo_create_attributes($product_id, $row)
+function woo_create_attributes($product_id, $row, $is_variable = false)
 {
 	$attrs = array();
 	for ($i = 1; $i <= 2; $i++) {
@@ -268,7 +268,7 @@ function woo_create_attributes($product_id, $row)
 			'name'         => $attr_glb ? $taxonomy : $attr_name,
 			'value'        => implode(' | ', $options),
 			'is_visible'   => $attr_vis ? 1 : 0,
-			'is_variation' => 1,
+			'is_variation' => $is_variable ? 1 : 0,
 			'is_taxonomy'  => $attr_glb ? 1 : 0,
 		);
 	}

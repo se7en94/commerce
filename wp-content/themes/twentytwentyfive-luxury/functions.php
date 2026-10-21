@@ -81,3 +81,10 @@ add_filter('block_categories_all', function ($categories) {
         ],
     ]);
 }, 10, 1);
+
+// pa_brand archives live at /designer/{brand} — the default /brand/ base collides
+// with WooCommerce 9.4+ native Brands (product_brand) rewrite rules, causing 404s.
+add_filter('woocommerce_taxonomy_args_pa_brand', function ($args) {
+    $args['rewrite']['slug'] = 'designer';
+    return $args;
+}, 10, 1);
