@@ -99,6 +99,53 @@ add_filter( 'pre_render_block', function ( $pre, $parsed_block ) {
 	return $html;
 }, 10, 2 );
 
+/* ------------------------------------------------- WooCommerce page links -- */
+
+/**
+ * Make WooCommerce page links (account icon, cart, checkout, shop…) point to
+ * the current language's page when a Polylang translation exists. Free Polylang
+ * does not translate the wc page options; without this the account icon on
+ * /zh/ bounces the user back to the English account page.
+ *
+ * Note: WC applies DYNAMIC per-page filters — e.g. myaccount links go through
+ * 'woocommerce_get_myaccount_page_permalink', not a generic hook.
+ */
+function velore_i18n_wc_page_link( $permalink, $page ) {
+	if ( is_admin() ) {
+		return $permalink;
+	}
+	$lang = velore_i18n_lang_slug();
+	if ( '' === $lang || 'en' === $lang ) {
+		return $permalink;
+	}
+
+	$page_id = wc_get_page_id( $page );
+	if ( ! $page_id || -1 === $page_id ) {
+		return $permalink;
+	}
+
+	$translated = function_exists( 'pll_get_post' ) ? pll_get_post( $page_id, $lang ) : 0;
+	if ( ! $translated || ! get_post( $translated ) ) {
+		return $permalink; // no translation for this page — keep default
+	}
+
+	$tr = get_permalink( $translated );
+	return $tr ? $tr : $permalink;
+}
+
+add_filter( 'woocommerce_get_myaccount_page_permalink', function ( $p ) {
+	return velore_i18n_wc_page_link( $p, 'myaccount' );
+} );
+add_filter( 'woocommerce_get_shop_page_permalink', function ( $p ) {
+	return velore_i18n_wc_page_link( $p, 'shop' );
+} );
+add_filter( 'woocommerce_get_cart_page_permalink', function ( $p ) {
+	return velore_i18n_wc_page_link( $p, 'cart' );
+} );
+add_filter( 'woocommerce_get_checkout_page_permalink', function ( $p ) {
+	return velore_i18n_wc_page_link( $p, 'checkout' );
+} );
+
 /* ------------------------------------------------------- footer template part -- */
 
 add_filter( 'pre_render_block', function ( $pre, $parsed_block ) {

@@ -190,6 +190,22 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  修复 T-3.2  注册功能「无实际效果」复审（客户反馈）：E2E 三路径重测发现
+            根因——woocommerce_registration_generate_password 原为 yes：注册表单无
+            密码框，WC 生成临时密码发邮件，而本地 Docker 无邮件服务（sendmail 全程
+            报错），用户注册后永远收不到密码、登不进账号 → 功能形同虚设。
+            修复：该选项改 no，注册时站内自设密码；HTTP 层权威测试（nonce+POST+
+            wp_authenticate）：注册 user#13 成功、自定义密码立即可登录、无码注册正常，
+            三路径（无码/有效码/无效码）浏览器全过。
+            连带修复：zh 页账户图标链接跳回英文 /my-account/——免费版 Polylang 不翻译
+            WC 页面选项，且 WC 页面链接的 filter 是动态命名的
+            woocommerce_get_{page}_page_permalink（踩坑⑳：不存在通用的
+            woocommerce_get_page_permalink hook，第一版挂错位置全无效），已在
+            velore-i18n.php 挂 myaccount/shop/cart/checkout 四个动态 filter，
+            zh 账户图标现指向 /zh/my-account-zh/，EN 不受影响。
+            复审结论：注册功能当前完整可用（站内密码+选填邀请码+原子核销）；
+            注意本地环境无邮件服务，后续上线生产前需配 SMTP 插件（订单/密码重置
+            邮件依赖），已列入部署清单
 2026-10-21  修复 T-3.4  导航双份 + header 变窄 + 下拉过宽（客户反馈）：
             ①根因：自定义 PHP 渲染器调 get_header()/get_footer()，而 block 模板
             front-page.html 自带 header/footer template-part → zh 页整块 header 渲染两次。
