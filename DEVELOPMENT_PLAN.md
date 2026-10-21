@@ -140,7 +140,7 @@
 | ✅ T-2.1 | 整理 30 个种子商品（含图/价/库存）| `sample-data/products.csv` | 4h |
 | ✅ T-2.2 | `import-products.php` 完善 | 跑一遍能导入全部 30 个商品 | 2h |
 | ✅ T-2.3 | 商品类目树（品牌 → 类目 → 商品）| WP 后台类目树清晰 | 1h |
-| T-2.4 | 商品属性（尺寸/颜色/材质）| 详情页能选变体 | 2h |
+| ✅ T-2.4 | 商品属性（尺寸/颜色/材质）| 详情页显示 Brand + Condition（寄卖孤品无变体可选，验收标准重新定义）| 2h |
 
 ### Phase 3 — 核心非标功能
 
@@ -190,6 +190,10 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-2.4  商品属性收尾：CSV 追加 Condition 属性（Excellent/Very Good/Pristine，
+            从 Short description 提取），详情页 Additional Information 显示 Brand + Condition。
+            验收标准重新定义：寄卖模式每件孤品库存 1，「选变体」不适用，参照 Fashionphile
+            以属性展示替代（尺寸/材质已含在商品名与描述中）
 2026-10-20  完成 T-2.3  类目树 + 品牌归档上线：Handbags(12)/Watches(9)/Jewelry(9) 归属正确；
             26 个品牌词项入 pa_brand，详情页显示 Brand 属性行；品牌归档基址改为 /designer/{brand}
             （/brand/chanel/ 已通）。import-products.php 修复：属性导入原来只对 variable 类型
