@@ -157,10 +157,10 @@
 
 | Task | 描述 | 验收标准 | 预估 |
 |---|---|---|---|
-| T-4.1 | GTM4WP 插件 + GA4 事件 | view_item/add_to_cart/begin_checkout/purchase 全埋点 | 3h |
-| T-4.2 | Meta Pixel 集成 | 同上事件同步到 Meta | 1h |
-| T-4.3 | 邮件模板品牌化 | 订单确认/发货/退款邮件带 VELORÉ 视觉 | 3h |
-| T-4.4 | SEO 基础（Yoast）| 站点地图 + OG 标签 + meta | 2h |
+| T-4.1 | ~~GTM4WP 插件 + GA4 事件~~ ✅ 完成（GTM4WP v2.0.6 常量硬编码模式，见 CHANGELOG）| view_item/add_to_cart/begin_checkout/purchase 全埋点 | 3h |
+| T-4.2 | ~~Meta Pixel 集成~~ ✅ 完成（velore-pixel.php v1.0.0 自研，见 CHANGELOG）| 同上事件同步到 Meta | 1h |
+| T-4.3 | ~~邮件模板品牌化~~ ✅ 完成（velore-branding.php + Emogrifier 三库，见 CHANGELOG）| 订单确认/发货/退款邮件带 VELORÉ 视觉 | 3h |
+| T-4.4 | ~~SEO 基础（Yoast）~~ ✅ 完成（Yoast 28.7 + indexables 全量索引，见 CHANGELOG）| 站点地图 + OG 标签 + meta | 2h |
 
 ### Phase 5 — 硬骨头测试（必须真实环境）
 
@@ -184,12 +184,68 @@
 | T-6.5 | 切换真实 PPCP 凭证 + use_sandbox=false | 0.5d |
 | T-6.6 | 真实金额测试单 + 退款 | 0.5d |
 | T-6.7 | 客户签收文档（3 份）| 0.5d |
+| T-6.8 | 生产检查：blog_public=1 / SMTP 插件配置 / 店铺地址补全 / OG 图换正式品牌图 | 0.5d |
 
 ---
 
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  完成 T-4.4  SEO 基础（Yoast SEO 28.7 容器内安装，不入 git）：
+            ①sitemap：Yoast 接管（sitemap_index.xml → post/page/product/
+            product_cat 子表，product-sitemap 181 URL 含六语言商品）；robots.txt
+            合并 WC 规则 + Yoast block（含 sitemap 引用）；②OG：首页全套
+            （title/desc/url/image 1840x1380/site_name/locale + 5 语言 alternate）、
+            商品页自动取商品图 + og:image:width/height/type + yoast-schema-graph
+            JSON-LD + WC Product schema 双结构化数据；③meta：首页手写 description
+            （同步 post meta _yoast_wpseo_metadesc + indexable.description）、商品用
+            wpseo_titles[metadesc-product]=%%excerpt%% 模板自动填充、tagline 补
+            「Curated pre-owned luxury…」；④canonical 首页/商品/zh 页全出、
+            hreflang 六语言（Yoast + Polylang 协作）；⑤twitter:card large_image。
+            踩坑㉘：blog_public=0（WP「建议搜索引擎不索引」本地默认勾选）会让
+            Yoast 全站 noindex 且抑制 canonical——必须先 update_option('blog_public',1)
+            再重建索引，上线检查清单加此项（生产必为 1）。踩坑㉙：Yoast v28 的
+            canonical/sitemap 依赖 indexables 表，激活后仅 6 行（未索引）——
+            无 wp-cli 时用 YoastSEO()->classes->get(Actions\Indexing\*) 逐个调
+            index()（Post/Term/PostTypeArchive/General 四动作共 108 行），PHP
+            单引号传命名空间类名（双引号 \\ 转义后容器按字面量查找报 non-existent
+            service）
+2026-10-21  完成 T-4.3  邮件品牌化（velore-branding.php v1.0.0 + velore-email-
+            dependencies.php + vendor-libs 三库捆绑）：黑底金字排版字标（table 布局
+            Outlook 兼容）、金色衬线 h1/h2、品牌页脚「VELORÉ — Curated Luxury」；
+            DB 邮件色板（base=#111111 / background=#F6F4EF / body=#FFFFFF /
+            text=#1A1A1A）+ 启用 email_improvements 特性（WC 10.x block 邮件模板）；
+            AST 追踪块蓝色硬编码（按钮 #005b9a / 追踪号 #03a9f4）经 woocommerce_mail_
+            content filter（style_inline 之后执行）替换为黑底金字按钮 + 金色追踪号。
+            重大隐患修复：WC 10.x 不再捆绑 Emogrifier，style_inline() 会 Fatal
+            （CssInliner 类不存在）→ 生产邮件全部裸样式；捆绑 pelago/emogrifier 7.3.0
+            + symfony/css-selector 6.4.0 + sabberworm/PHP-CSS-Parser 8.7.0（mu-plugins/
+            vendor-libs/，PSR-4 spl 自动加载，101 文件 724K）。验收：真实发送管线
+            （get_content_html → style_inline → mail_content）输出 17.2KB 全内联样式，
+            chrome 截图目验黑字标/金标题/黑金按钮/象牙底/品牌页脚全过。
+            踩坑㉔：字标 hook 用 woocommerce_email_header 优先级 10 会注册在 WC 回调
+            之前，输出到 <!DOCTYPE> 之前破坏文档（Emogrifier 报 no HEAD element）——
+            优先级必须 >10（现用 15）。踩坑㉕：Emogrifier 依赖链三库缺一不可
+            （CssInliner → CssSelector → PHP-CSS-Parser），sabberworm 包名是
+            sabberworm/php-css-parser 且仓库已迁移 MyIntervals/PHP-CSS-Parser（tag v8.7.0）。
+            踩坑㉖：验证内联样式颜色时 strpos 大小写敏感会误判（sabberworm 序列化把
+            #C9A96A 小写化为 #c9a96a）——检查必须大小写不敏感。本地无 SMTP 为已知
+            部署项（需配 SMTP 插件）；站点店铺地址占位「cs, cs」待客户上线前补全
+2026-10-21  完成 T-4.2  Meta Pixel 集成（velore-pixel.php v1.0.0，自研注入）：
+            GTM4WP 免费版无 Pixel 通道 → mu-plugin 直挂。VELORE_META_PIXEL_ID 环境变量
+            门控（.env → WORDPRESS_CONFIG_EXTRA 常量，空值零输出零报错）；五事件：
+            PageView（基座）、ViewContent（商品页 SKU+价格）、AddToCart
+            （woocommerce_add_to_cart → velore_pixel_before_pageview）、InitiateCheckout
+            （is_checkout 非感谢页）、Purchase（order-received + hash_equals key 校验）；
+            注入点 wp_head 优先级 1 + wp_body_open noscript。浏览器验证 5/5 事件
+2026-10-21  完成 T-4.1  GA4 埋点（GTM4WP v2.0.6 容器内安装）：GTM4WP_HARDCODED_
+            GTM_ID 常量硬编码模式（wp-config 经 WORDPRESS_CONFIG_EXTRA 注入，免 UI
+            配置）；woocommerce 层开启 classic+block 双跟踪。浏览器验证四事件：
+            view_item（商品页 DL ecommerce.items）、add_to_cart（AJAX 后触发）、
+            begin_checkout（结账页）、purchase（新建订单 #442 感谢页）。
+            踩坑㉗：gtm4wp-options 里的开关必须是 PHP 布尔 true（序列化 b:1）而非
+            整数 1（i:1）——v2 用 true !== 严格比较，整数不生效；purchase 事件有
+            订单新鲜度窗口+防重复（旧订单 #71 的感谢页被正确抑制属预期行为）
 2026-10-21  完成 T-3.6  物流追踪（AST 免费版 woo-advanced-shipment-tracking v4.0.4，
             容器内安装，不入 git）：1084 家承运商从 TrackShip 公开 API 同步入库
             （api.trackship.com/v1/shipping_carriers/all）；后台订单页 Shipment Tracking
