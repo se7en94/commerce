@@ -3,7 +3,7 @@
 /**
  * Plugin Name: VELORÉ Core — Invite Codes
  * Description: Optional invite code at registration. Adds an "Invite code" field to the My Account registration form; a submitted code is validated on the backend and atomically consumed, a blank code registers without one. Admin page (WooCommerce → Invite Codes) to generate / revoke / inspect codes and usage records.
- * Version:     1.2.0
+ * Version:     1.3.0
  * Text Domain: velore-core
  *
  * mu-plugin: always on by design — registration gating is core business logic.
@@ -260,9 +260,38 @@ add_action('woocommerce_register_form', function () {
 });
 
 /**
+ * Confirm-password field (UX only — catches typos). Priority 9 keeps it right
+ * after the core password field and before the invite code field. Independent
+ * of the invite-code mode: it belongs to the form, not the invite feature.
+ */
+add_action('woocommerce_register_form', function () {
+?>
+	<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+		<label for="reg_password2"><?php esc_html_e('Confirm password', 'velore-core'); ?></label>
+		<input type="password" class="woocommerce-Input woocommerce-Input--text input-text" name="password2" id="reg_password2" autocomplete="new-password" />
+	</p>
+<?php
+}, 9);
+
+/**
  * Pre-creation validation. Fires inside wc_create_new_customer() for every
  * registration path; a WP_Error here aborts account creation.
  */
+/* Password confirmation — only enforced when the field was actually
+ * submitted, i.e. from the public form. Programmatic paths (admin, Store API,
+ * wc_create_new_customer) do not POST password2 and stay unaffected.
+ */
+add_action('woocommerce_register_post', function ($username, $email, WP_Error $errors) {
+	if (!isset($_POST['password2'])) {
+		return;
+	}
+	$pw  = isset($_POST['password']) ? (string) wp_unslash($_POST['password']) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by WC form handler
+	$pw2 = (string) wp_unslash($_POST['password2']); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	if ('' === $pw2 || $pw !== $pw2) {
+		$errors->add('velore_password_mismatch', esc_html__('Passwords do not match. Please re-enter them.', 'velore-core'));
+	}
+}, 9, 3);
+
 add_action('woocommerce_register_post', function ($username, $email, WP_Error $errors) {
 	// Feature off — accept any registration untouched.
 	if ('disabled' === velore_ic_mode()) {

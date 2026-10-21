@@ -190,6 +190,12 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  增强 T-3.2  注册表单新增确认密码字段（mu-plugin v1.3.0，客户需求）：
+            渲染在密码之后、邀请码之前（优先级 9）；后端在 woocommerce_register_post
+            校验一致性，不一致报「Passwords do not match」拒绝建号。仅当表单实际提交
+            password2 时才校验——程序化注册路径（后台/Store API/wc_create_new_customer）
+            不受影响。HTTP 层验证 3/3：字段顺序正确（password→password2→invite）、
+            不一致拒绝且不建号、一致注册成功且立即可用密码登录
 2026-10-21  修复 T-3.2  注册功能「无实际效果」复审（客户反馈）：E2E 三路径重测发现
             根因——woocommerce_registration_generate_password 原为 yes：注册表单无
             密码框，WC 生成临时密码发邮件，而本地 Docker 无邮件服务（sendmail 全程
