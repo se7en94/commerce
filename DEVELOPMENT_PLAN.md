@@ -147,8 +147,8 @@
 | Task | 描述 | 验收标准 | 预估 |
 |---|---|---|---|
 | ✅ T-3.1 | **自定义订单状态**「待向供应商付款」 | 注册 `wc-pending-supplier` 状态，插入 processing 之后 | 2h |
-| T-3.2 | **邀请码注册**（方案 B）| Custom Registration Fields 插件 + `woocommerce_register_post` hook 校验；无效码拒绝注册 | 6h |
-| T-3.3 | 邀请码管理后台 | 管理员能生成/作废/查看使用记录 | 4h |
+| ✅ T-3.2 | **邀请码注册**（方案 B）| Custom Registration Fields 插件 + `woocommerce_register_post` hook 校验；无效码拒绝注册 | 6h |
+| ✅ T-3.3 | 邀请码管理后台 | 管理员能生成/作废/查看使用记录 | 4h |
 | T-3.4 | **多语言**（Polylang 免费版）| 英/中/西/德/葡/法 6 语言切换；商品可逐语言翻译 | 8h |
 | T-3.5 | **多币种**（CURCY 或 Aelia）| USD/CAD/SGD/EUR 切换，汇率自动 | 3h |
 | T-3.6 | **物流追踪**（Advanced Shipment Tracking）| 输单号自动识别承运商 + 抓轨迹 | 3h |
@@ -190,6 +190,27 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  完成 T-3.2/T-3.3  邀请码注册闭环上线：自研方案（替代 Custom Registration Fields
+            三方插件）wp-content/mu-plugins/velore-invite-codes.php。自定义表
+            wp_velore_invite_codes / wp_velore_invite_code_uses（dbDelta 自建）。
+            后端原子化校验（硬约束）：校验挂 woocommerce_register_post（在
+            wc_create_new_customer 内触发，天然覆盖 My Account/经典 checkout/Store API/
+            REST 全部建户路径）；核销挂 woocommerce_created_customer，单条条件 UPDATE
+            （used_count+1 WHERE status=active AND used_count<max_uses AND 未过期），
+            DB 层原子无竞态，核销失败自动回滚删除刚建账号。管理后台：WooCommerce →
+            Invite Codes（批量生成/多用途/有效期/内部备注、作废/激活/删除、使用记录、
+            生成后明码展示一次）。码格式 VELORE-XXXX-XXXX-XXXX（31 字符表，无 0O1I）。
+            验证：CLI 16/16 通过（原子性/多用途/作废/过期/大小写归一化/使用日志），
+            浏览器 5/5 通过（字段渲染/无效码拒/空码拒/有效码注册成功/复用码拒绝），
+            测试数据已清理
+            数据库侧变更（不在 git）：woocommerce_enable_myaccount_registration=yes
+            （此前站点全部自助注册路径为关闭状态，My Account 注册现为唯一公开入口）
+            踩坑⑬：My Account 表单的 woocommerce_process_registration_errors 过滤器
+                   只覆盖该表单路径——要全局防绕过必须挂 woocommerce_register_post
+                   （它在 wc_create_new_customer 内部触发，覆盖所有建户调用方）；
+                   admin 手工建户走 wp_insert_user 不触发 WC 钩子，无需豁免逻辑
+            注意：若未来开启 checkout 注册，block checkout 无邀请码字段会被后端拦截，
+                  需先补 Additional Checkout Fields 接线（见本文件 T-3.2 备注）
 2026-10-21  完成 T-3.1  自定义订单状态「待向供应商付款」上线：新建 mu-plugin 体系
             wp-content/mu-plugins/velore-order-status.php（必载不可停用，业务逻辑与主题解耦），
             wc-pending-supplier 插入 processing 之后；计入 paid statuses 与 legacy reports
