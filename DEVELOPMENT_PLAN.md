@@ -137,8 +137,8 @@
 
 | Task | 描述 | 验收标准 | 预估 |
 |---|---|---|---|
-| T-2.1 | 整理 30 个种子商品（含图/价/库存）| `sample-data/products.csv` | 4h |
-| T-2.2 | `import-products.php` 完善 | 跑一遍能导入全部 30 个商品 | 2h |
+| ✅ T-2.1 | 整理 30 个种子商品（含图/价/库存）| `sample-data/products.csv` | 4h |
+| ✅ T-2.2 | `import-products.php` 完善 | 跑一遍能导入全部 30 个商品 | 2h |
 | T-2.3 | 商品类目树（品牌 → 类目 → 商品）| WP 后台类目树清晰 | 1h |
 | T-2.4 | 商品属性（尺寸/颜色/材质）| 详情页能选变体 | 2h |
 
@@ -190,6 +190,15 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-20  完成 T-2.1/T-2.2  30 个种子商品上线：sample-data/products.csv（12 包/9 表/9 珠宝，
+            寄卖逻辑每件库存 1，含 Brand 属性 + 2 个折价品 + 4 个 featured）；生成 6 张 Noir
+            风格商品占位图（1840x1380，两次 sips 裁剪去水印）入主题 assets，30 商品轮换复用；
+            import-products.php 修复 CLI fatal + CSV 路径；新增 scripts/seed-prepare.php
+            （注册 pa_brand 全局属性 + 清理 18 个 WooCommerce 样品商品及其附件）
+            踩坑⑩：CLI 跑导入时 media_handle_sideload 未定义——wp-load 不加载 wp-admin/includes，
+                   需手动 require file.php / media.php / image.php
+            备注：缩略图按 T-1.6 新尺寸生成 1024x768 4:3；总数 31 = 30 商品 + 1 个历史
+            auto-draft（不可见，无影响）
 2026-10-20  完成 T-1.7  移动端验收通过（390x844 实测）：全站零横向溢出、网格 2 列、抽屉/搜索/
             详情页正常。顺手修复 3 个发现项：①桌面端 hover 价格作用域错误（luxury-product-card
             落在整页 UL 上，hover 任意处全网格显价 → 选择器改 > li 定位到单品）
