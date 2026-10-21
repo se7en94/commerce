@@ -190,6 +190,11 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  修订 T-3.2  新增邀请码后台设置项（mu-plugin v1.2.0）：Invite Codes 页顶部
+            Settings 区块——①模式三档切换：optional（选填，默认）/ required（恢复邀请制，
+            空码拒绝）/ disabled（隐藏字段不校验）；②码长度 4–12 可调（影响新生成的码，
+            placeholder 同步）。模式切换纯后台操作，无需改代码。CLI 7/7 验证三档模式
+            与长度设置端到端生效，默认值已还原 optional/6
 2026-10-21  修订 T-3.2  码格式二次缩短（客户需求）：XXXX-XXXX → 6 位纯字母数字无分隔
             （如 3FEW28），velore_ic_random_block 参数化长度，placeholder 同步 XXXXXX。
             重启清 OPcache 后格式/归一化验证通过，测试数据已清理（mu-plugin v1.1.1）

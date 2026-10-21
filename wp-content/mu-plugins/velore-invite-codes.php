@@ -3,7 +3,7 @@
 /**
  * Plugin Name: VELORÉ Core — Invite Codes
  * Description: Optional invite code at registration. Adds an "Invite code" field to the My Account registration form; a submitted code is validated on the backend and atomically consumed, a blank code registers without one. Admin page (WooCommerce → Invite Codes) to generate / revoke / inspect codes and usage records.
- * Version:     1.1.1
+ * Version:     1.2.0
  * Text Domain: velore-core
  *
  * mu-plugin: always on by design — registration gating is core business logic.
@@ -61,6 +61,27 @@ function velore_ic_random_block(int $length = 6): string
 		$out .= VELORE_IC_ALPHABET[random_int(0, $max)];
 	}
 	return $out;
+}
+
+/**
+ * Registration gating mode, configurable in the admin settings:
+ * - optional (default): blank code registers without an invite
+ * - required: registration is invite-only again
+ * - disabled: field hidden, no validation at all
+ */
+function velore_ic_mode(): string
+{
+	$mode = get_option('velore_ic_mode', 'optional');
+	return in_array($mode, array('optional', 'required', 'disabled'), true) ? $mode : 'optional';
+}
+
+/**
+ * Length of newly generated codes (4–12 chars from the 31-char alphabet).
+ */
+function velore_ic_length(): int
+{
+	$len = (int) get_option('velore_ic_length', 6);
+	return min(12, max(4, $len));
 }
 
 /* -------------------------------------------------------------------------
@@ -129,8 +150,8 @@ function velore_ic_generate(int $count, int $max_uses, int $expires_in_days, str
 	for ($i = 0; $i < $count; $i++) {
 		$attempts = 0;
 		do {
-			// 6 plain chars from a 31-char alphabet (31^6 ≈ 887M) — short, no separators.
-			$code = velore_ic_random_block();
+			// Length configurable in admin settings (4–12 chars from a 31-char alphabet).
+			$code = velore_ic_random_block(velore_ic_length());
 			$exists = $wpdb->get_var($wpdb->prepare('SELECT id FROM ' . velore_ic_table_codes() . ' WHERE code = %s', $code));
 			$attempts++;
 		} while ($exists && $attempts < 5);
@@ -225,11 +246,15 @@ function velore_ic_claim(string $code, int $user_id, string $email): bool
  * ---------------------------------------------------------------------- */
 
 add_action('woocommerce_register_form', function () {
+	if ('disabled' === velore_ic_mode()) {
+		return; // feature off — no field rendered
+	}
 	$value = isset($_POST['velore_invite_code']) ? sanitize_text_field(wp_unslash($_POST['velore_invite_code'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- mirrors core form fields, nonce verified by WC
+	$optional = 'optional' === velore_ic_mode();
 ?>
 	<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-		<label for="velore_invite_code"><?php esc_html_e('Invite code', 'velore-core'); ?> <span class="optional">(<?php esc_html_e('optional', 'velore-core'); ?>)</span></label>
-		<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="velore_invite_code" id="velore_invite_code" value="<?php echo esc_attr($value); ?>" autocomplete="off" spellcheck="false" placeholder="XXXXXX" />
+		<label for="velore_invite_code"><?php esc_html_e('Invite code', 'velore-core'); ?><?php if ($optional) : ?> <span class="optional">(<?php esc_html_e('optional', 'velore-core'); ?>)</span><?php endif; ?></label>
+		<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="velore_invite_code" id="velore_invite_code" value="<?php echo esc_attr($value); ?>" autocomplete="off" spellcheck="false" placeholder="<?php echo esc_attr(str_repeat('X', velore_ic_length())); ?>" />
 	</p>
 <?php
 });
@@ -239,6 +264,11 @@ add_action('woocommerce_register_form', function () {
  * registration path; a WP_Error here aborts account creation.
  */
 add_action('woocommerce_register_post', function ($username, $email, WP_Error $errors) {
+	// Feature off — accept any registration untouched.
+	if ('disabled' === velore_ic_mode()) {
+		return;
+	}
+
 	// Shop managers / privileged API integrations may create accounts directly.
 	if (current_user_can('manage_woocommerce')) {
 		return;
@@ -246,8 +276,11 @@ add_action('woocommerce_register_post', function ($username, $email, WP_Error $e
 
 	$code = isset($_POST['velore_invite_code']) ? velore_ic_normalize(wp_unslash($_POST['velore_invite_code'])) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by WC form handler
 
-	// Codes are optional: blank means "registering without an invite".
+	// Blank code: fine in optional mode, rejected in required mode.
 	if ('' === $code) {
+		if ('required' === velore_ic_mode()) {
+			$errors->add('velore_invite_code_missing', esc_html__('An invite code is required to register.', 'velore-core'));
+		}
 		return;
 	}
 
@@ -265,6 +298,10 @@ add_action('woocommerce_register_post', function ($username, $email, WP_Error $e
  * back and surface the same generic error.
  */
 add_action('woocommerce_created_customer', function ($customer_id, $new_customer_data) {
+	if ('disabled' === velore_ic_mode()) {
+		return;
+	}
+
 	if (current_user_can('manage_woocommerce')) {
 		return;
 	}
@@ -337,6 +374,8 @@ function velore_ic_render_admin_page(): void
 		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Code deleted.', 'velore-core') . '</p></div>';
 	} elseif ('error' === $msg) {
 		echo '<div class="notice notice-error is-dismissible"><p>' . esc_html__('Action failed.', 'velore-core') . '</p></div>';
+	} elseif ('settings' === $msg) {
+		echo '<div class="notice notice-success is-dismissible"><p>' . esc_html__('Settings saved.', 'velore-core') . '</p></div>';
 	}
 
 	$per_page  = 20;
@@ -362,7 +401,28 @@ function velore_ic_render_admin_page(): void
 	<div class="wrap">
 		<h1><?php esc_html_e('Invite Codes', 'velore-core'); ?></h1>
 
-		<h2><?php esc_html_e('Generate new codes', 'velore-core'); ?></h2>
+		<h2><?php esc_html_e('Settings', 'velore-core'); ?></h2>
+		<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+			<input type="hidden" name="action" value="velore_ic_settings" />
+			<?php wp_nonce_field('velore_ic_settings'); ?>
+			<p style="margin:0">
+				<label><strong><?php esc_html_e('Invite code mode', 'velore-core'); ?></strong><br />
+					<select name="mode">
+						<option value="optional" <?php selected(velore_ic_mode(), 'optional'); ?>><?php esc_html_e('Optional — blank code allowed', 'velore-core'); ?></option>
+						<option value="required" <?php selected(velore_ic_mode(), 'required'); ?>><?php esc_html_e('Required — invite-only registration', 'velore-core'); ?></option>
+						<option value="disabled" <?php selected(velore_ic_mode(), 'disabled'); ?>><?php esc_html_e('Disabled — hide field, no validation', 'velore-core'); ?></option>
+					</select></label>
+			</p>
+			<p style="margin:0">
+				<label><strong><?php esc_html_e('Code length (new codes, 4–12)', 'velore-core'); ?></strong><br />
+					<input type="number" name="length" min="4" max="12" value="<?php echo esc_attr(velore_ic_length()); ?>" class="small-text" /></label>
+			</p>
+			<p style="margin:0">
+				<?php submit_button(__('Save settings', 'velore-core'), 'secondary', 'submit', false); ?>
+			</p>
+		</form>
+
+		<h2 style="margin-top:32px"><?php esc_html_e('Generate new codes', 'velore-core'); ?></h2>
 		<form method="post" action="<?php echo esc_url(admin_url('admin-post.php')); ?>" style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
 			<input type="hidden" name="action" value="velore_ic_generate" />
 			<?php wp_nonce_field('velore_ic_generate'); ?>
@@ -487,6 +547,24 @@ function velore_ic_render_admin_page(): void
 }
 
 /* ---------------------------- admin_post handlers ----------------------- */
+
+add_action('admin_post_velore_ic_settings', function () {
+	if (!current_user_can('manage_woocommerce')) {
+		wp_die(esc_html__('You are not allowed to manage invite codes.', 'velore-core'));
+	}
+	check_admin_referer('velore_ic_settings');
+
+	$mode = isset($_POST['mode']) && in_array($_POST['mode'], array('optional', 'required', 'disabled'), true)
+		? $_POST['mode']
+		: 'optional';
+	$length = min(12, max(4, absint($_POST['length'] ?? 6)));
+
+	update_option('velore_ic_mode', $mode);
+	update_option('velore_ic_length', $length);
+
+	wp_safe_redirect(velore_ic_admin_link(array('velore_msg' => 'settings')));
+	exit;
+});
 
 add_action('admin_post_velore_ic_generate', function () {
 	if (!current_user_can('manage_woocommerce')) {
