@@ -218,14 +218,18 @@ Text Domain: tt5-luxury
 .luxury-lang-switcher {
 	display: flex;
 	align-items: center;
-	height: 32px;
+	flex: 0 0 auto; /* 不参与 flex 分配，保持图标行原有宽度 */
+	width: auto;
 }
 
 .luxury-lang-switcher select {
 	appearance: none;
 	-webkit-appearance: none;
+	width: auto; /* 覆盖主题表单的 width:100% */
+	min-width: 0;
+	max-width: 96px;
 	height: 32px;
-	padding: 0 22px 0 2px;
+	padding: 0 18px 0 2px;
 	background: transparent;
 	border: 0;
 	border-bottom: 1px solid color-mix(in srgb, var(--wp--preset--color--accent-6) 35%, transparent);

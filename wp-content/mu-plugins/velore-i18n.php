@@ -1,19 +1,23 @@
 <?php
 /**
  * Plugin Name: VELORÉ Core — i18n Template Switching
- * Description: Serves language-specific theme files under Polylang: swaps the navigation block ref, the header/footer template parts and the front-page template to their {lang} variants when they exist. English (default language) keeps using the original files untouched.
- * Version:     1.0.0
+ * Description: Serves language-specific theme templates under Polylang. For non-default languages, swaps the front-page block template content to front-page-{lang}.html and re-renders the core/navigation block from a per-language wp_navigation post; template parts fall back to the original files when no {lang} variant exists. English (default language) is never touched.
+ * Version:     1.1.0
  * Text Domain: velore-core
  *
  * mu-plugin: always on by design.
  *
  * How it works:
- * - core/navigation   → pre_render_block re-renders the block with a per-language
- *                       wp_navigation post id (option `velore_nav_ids`).
- * - core/template-part → pre_render_block swaps slug `header` / `footer` to
- *                       parts/header-{lang}.html / parts/footer-{lang}.html.
- * - front page        → template_include renders templates/front-page-{lang}.html
- *                       through a tiny block renderer.
+ * - front page   → get_block_template filter replaces the template CONTENT for
+ *                  'front-page' with front-page-{lang}.html; WordPress renders
+ *                  it through the normal block-template pipeline (document
+ *                  shell + template parts handled by core — no custom
+ *                  renderer, no duplicated header/footer).
+ * - navigation   → pre_render_block re-renders core/navigation with the
+ *                  per-language wp_navigation id (option `velore_nav_ids`).
+ * - template part→ pre_render_block swaps slug `footer` to footer-{lang}.html.
+ *                  (header-{lang}.html not used; the header is language-neutral
+ *                  apart from the nav, which is swapped above.)
  *
  * English always falls through — zero overhead for the default language.
  */
@@ -35,6 +39,33 @@ function velore_i18n_theme_file( string $rel ): ?string {
 	return ( $path && file_exists( $path ) ) ? $path : null;
 }
 
+/* ---------------------------------------------------------------- front page -- */
+
+add_filter( 'template_include', function ( $template ) {
+	global $_wp_current_template_content;
+
+	// Only for requests resolved to a block template (WP renders those through
+	// wp-includes/template-canvas.php, which prints the global below).
+	if ( ABSPATH . WPINC . '/template-canvas.php' !== $template || ! is_front_page() ) {
+		return $template;
+	}
+
+	$lang = velore_i18n_lang_slug();
+	if ( '' === $lang || 'en' === $lang ) {
+		return $template;
+	}
+
+	$file = velore_i18n_theme_file( "templates/front-page-{$lang}.html" );
+	if ( null === $file ) {
+		return $template;
+	}
+
+	// Swap the resolved block-template content; the canvas keeps handling the
+	// document shell and template parts exactly like the default language.
+	$_wp_current_template_content = (string) file_get_contents( $file );
+	return $template;
+}, 20 );
+
 /* ---------------------------------------------------------------- nav block -- */
 
 add_filter( 'pre_render_block', function ( $pre, $parsed_block ) {
@@ -50,7 +81,7 @@ add_filter( 'pre_render_block', function ( $pre, $parsed_block ) {
 	$ref   = isset( $ids[ $lang ] ) ? (int) $ids[ $lang ] : 0;
 	$attrs = $parsed_block['attrs'] ?? array();
 
-	// Only swap the header's primary nav (the one that references an existing nav post).
+	// Only swap navs that reference a wp_navigation post (the header nav).
 	if ( ! $ref || empty( $attrs['ref'] ) || (int) $attrs['ref'] === $ref ) {
 		return $pre;
 	}
@@ -59,16 +90,16 @@ add_filter( 'pre_render_block', function ( $pre, $parsed_block ) {
 	if ( $in_swap ) {
 		return $pre; // guard against recursion through render_block()
 	}
-	$in_swap        = true;
-	$swapped        = $parsed_block;
+	$in_swap               = true;
+	$swapped               = $parsed_block;
 	$swapped['attrs']['ref'] = $ref;
-	$html           = render_block( $swapped );
-	$in_swap        = false;
+	$html                  = render_block( $swapped );
+	$in_swap               = false;
 
 	return $html;
 }, 10, 2 );
 
-/* ------------------------------------------------------- header/footer parts -- */
+/* ------------------------------------------------------- footer template part -- */
 
 add_filter( 'pre_render_block', function ( $pre, $parsed_block ) {
 	if ( 'core/template-part' !== ( $parsed_block['blockName'] ?? '' ) ) {
@@ -91,32 +122,3 @@ add_filter( 'pre_render_block', function ( $pre, $parsed_block ) {
 
 	return do_blocks( (string) file_get_contents( $file ) );
 }, 20, 2 );
-
-/* -------------------------------------------------------------- front page -- */
-
-add_filter( 'template_include', function ( $template ) {
-	if ( ! is_front_page() ) {
-		return $template;
-	}
-	$lang = velore_i18n_lang_slug();
-	if ( '' === $lang || 'en' === $lang ) {
-		return $template;
-	}
-
-	$file = velore_i18n_theme_file( "templates/front-page-{$lang}.html" );
-	if ( null === $file ) {
-		return $template;
-	}
-
-	return get_theme_file_path( 'templates/block-template-renderer.php' );
-}, 20 );
-
-/**
- * Renderer used by template_include above: renders a raw block-template HTML
- * file (path in $velore_block_template_file) wrapped in the site header/footer.
- */
-function velore_i18n_render_block_template( string $file ): void {
-	get_header();
-	echo do_blocks( (string) file_get_contents( $file ) ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- trusted theme file
-	get_footer();
-}

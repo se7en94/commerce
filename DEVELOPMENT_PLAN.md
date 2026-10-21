@@ -190,6 +190,17 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  修复 T-3.4  导航双份 + header 变窄 + 下拉过宽（客户反馈）：
+            ①根因：自定义 PHP 渲染器调 get_header()/get_footer()，而 block 模板
+            front-page.html 自带 header/footer template-part → zh 页整块 header 渲染两次。
+            正确做法：WP 文件型 block 模板走 template-canvas.php + 全局
+            $_wp_current_template_content（踩坑⑲：get_block_template 过滤器不在文件模板
+            解析路径上，替换该全局才是标准切入点）。已删除渲染器与 header.php/footer.php
+            shim，主题恢复纯 block 结构，EN/zh 均 single header、零 Deprecated；
+            ②下拉过宽：主题表单样式 select{width:100%} 撑爆图标行——切换器加
+            flex:0 0 auto + width:auto/max-width:96px 修复，header 布局恢复原宽
+            （浏览器 4/4：单导航/下拉 96px/1600px 约束正常/zh 同样正常）
+            mu-plugin velore-i18n.php v1.1.0
 2026-10-21  修订 T-3.4  多语言体验升级（客户需求）：①切换器从语言码横排改为下拉选择
             （原生 select，Noir 风格化：透明底/金色文字/细下划线/自定义 chevron）；
             ②页面内容随语言真正切换，四层实现：
