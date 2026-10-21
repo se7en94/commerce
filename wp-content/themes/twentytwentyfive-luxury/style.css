@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.0.13
+Version: 1.1.0
 Text Domain: tt5-luxury
 */
 
@@ -212,6 +212,64 @@ Text Domain: tt5-luxury
 .luxury-header .wc-block-mini-cart__button {
 	align-items: center;
 	line-height: 1;
+}
+
+/* 语言切换器：极简语言码横排（EN / 中文 …），与图标组同高同基线 */
+.luxury-lang-switcher ul {
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: center;
+	gap: 0;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.luxury-lang-switcher li {
+	margin: 0;
+	padding: 0 10px;
+	line-height: 32px;
+	list-style: none;
+}
+
+.luxury-lang-switcher li:not(:last-child) {
+	border-right: 1px solid color-mix(in srgb, var(--wp--preset--color--accent-6) 35%, transparent);
+}
+
+.luxury-lang-switcher a {
+	display: inline-flex;
+	align-items: center;
+	height: 32px;
+	font-family: var(--wp--preset--font-family--inter);
+	font-size: 0.6875rem;
+	font-weight: 400;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	text-decoration: none;
+	color: var(--wp--preset--color--contrast);
+	opacity: 0.55;
+	transition: opacity 0.2s ease;
+}
+
+.luxury-lang-switcher a:hover,
+.luxury-lang-switcher a:focus {
+	opacity: 1;
+}
+
+/* 当前语言：金色 + 高亮 */
+.luxury-lang-switcher .current-lang a {
+	color: var(--wp--preset--color--accent-2);
+	opacity: 1;
+	font-weight: 500;
+}
+
+/* Polylang block 输出的默认圆点/边框一律去掉，保持极简 */
+.luxury-lang-switcher ul,
+.luxury-lang-switcher li,
+.luxury-lang-switcher a {
+	border-radius: 0;
+	box-shadow: none;
+	background: none;
 }
 
 /* ===== Footer ===== */

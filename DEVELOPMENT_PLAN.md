@@ -190,6 +190,30 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  完成 T-3.4  多语言基础设施上线（Polylang 3.9 免费版，Docker 内手动安装激活）：
+            6 语言 en(默认)/zh/es/de/pt/fr，URL 前缀模式 /{lang}/（默认语言无前缀）；
+            product/product_cat/product_tag 已启用翻译；全部存量内容（30 商品、3 类目、
+            77 posts）已挂 en，避免语言过滤后前台消失；清理 WC 样品遗留空类目 7 个
+            （Accessories/Clothing/Decor/Hoodies/Music/Tshirts/重复 Handbags）。
+            主题接入：header.html 插入 polylang/language-switcher block（codes 横排
+            强制首页 force_home），style.css v1.1.0 Noir 风格化（细分隔线/金色当前语言/
+            与图标组 32px 同高对齐）。浏览器验收 3/3：六码显示、EN 金色高亮、切 /zh/ 正常、
+            无错位换行；各语言 URL 全部 200
+            免费版能力边界（重要）：
+            - hide_if_empty 遗留默认 true：没有内容的语言不显示在切换器——block 标记里
+              已显式 "hide_if_empty":false 才能全量展示（block.json 未声明该属性但
+              render 会透传给 Settings）
+            - 未翻译商品不会回退显示：/zh/shop/ 在商品翻译完成前是空的（严格语言过滤，
+              回退是 Pro 功能）——商品逐语言翻译是后续运营工作
+            - 切换器已设 force_home=true：点语言先跳该语言首页，避免未翻译页 404；
+              翻译覆盖后再改回默认（跟随当前页）
+            踩坑⑮：Polylang 3.9 API 大改版——PLL()->model->set_post_language() 等
+                   方法已移除，改用 pll_set_post_language()/pll_get_post_language()
+                   等 API 函数；CLI 下操作必须 define('PLL_ADMIN', true) 且先加
+                   $_SERVER['HTTP_HOST']，否则 PLL() 返回 null
+            踩坑⑯：Block 主题的 block 标记属性透传——block.json 未声明的属性
+                   （如 hide_if_empty）不会在编辑器 UI 出现，但手写进 HTML 注释
+                   后会原样传给 render 的 $attributes，可用于解锁隐藏设置项
 2026-10-21  修订 T-3.2  新增邀请码后台设置项（mu-plugin v1.2.0）：Invite Codes 页顶部
             Settings 区块——①模式三档切换：optional（选填，默认）/ required（恢复邀请制，
             空码拒绝）/ disabled（隐藏字段不校验）；②码长度 4–12 可调（影响新生成的码，
