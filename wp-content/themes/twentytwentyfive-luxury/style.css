@@ -214,15 +214,17 @@ Text Domain: tt5-luxury
 	line-height: 1;
 }
 
-/* 语言切换器：下拉选择（Noir 风格，与图标组同高同基线） */
-.luxury-lang-switcher {
+/* 语言/货币切换器：下拉选择（Noir 风格，与图标组同高同基线） */
+.luxury-lang-switcher,
+.luxury-currency-switcher {
 	display: flex;
 	align-items: center;
 	flex: 0 0 auto; /* 不参与 flex 分配，保持图标行原有宽度 */
 	width: auto;
 }
 
-.luxury-lang-switcher select {
+.luxury-lang-switcher select,
+.luxury-currency-switcher select {
 	appearance: none;
 	-webkit-appearance: none;
 	width: auto; /* 覆盖主题表单的 width:100% */
@@ -249,13 +251,16 @@ Text Domain: tt5-luxury
 }
 
 .luxury-lang-switcher select:hover,
-.luxury-lang-switcher select:focus {
+.luxury-lang-switcher select:focus,
+.luxury-currency-switcher select:hover,
+.luxury-currency-switcher select:focus {
 	border-bottom-color: var(--wp--preset--color--accent-2);
 	outline: none;
 }
 
 /* 下拉展开列表用系统默认配色，保证可读性 */
-.luxury-lang-switcher option {
+.luxury-lang-switcher option,
+.luxury-currency-switcher option {
 	color: #111;
 	background: #fff;
 	text-transform: none;

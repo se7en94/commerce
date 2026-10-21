@@ -150,7 +150,7 @@
 | ✅ T-3.2 | **邀请码注册**（方案 B）| Custom Registration Fields 插件 + `woocommerce_register_post` hook 校验；无效码拒绝注册 | 6h |
 | ✅ T-3.3 | 邀请码管理后台 | 管理员能生成/作废/查看使用记录 | 4h |
 | T-3.4 | **多语言**（Polylang 免费版）| 英/中/西/德/葡/法 6 语言切换；商品可逐语言翻译 | 8h |
-| T-3.5 | **多币种**（CURCY 或 Aelia）| USD/CAD/SGD/EUR 切换，汇率自动 | 3h |
+| T-3.5 | ~~**多币种**（CURCY 或 Aelia）~~ ✅ 完成（CURCY 免费版 + velore-currency.php，见 CHANGELOG）| USD/CAD/SGD/EUR 切换，汇率自动 | 3h |
 | T-3.6 | **物流追踪**（Advanced Shipment Tracking）| 输单号自动识别承运商 + 抓轨迹 | 3h |
 
 ### Phase 4 — 营销与分析
@@ -190,6 +190,20 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  完成 T-3.5  多币种（CURCY 免费版 2.1.1 + velore-currency.php v1.0.0）：
+            5 币种 USD/EUR/CAD/SGD/BRL，基准 USD（修复遗留 HKD 基准设置）；语言→货币
+            自动映射（en/zh→USD，es/de/fr→EUR，pt→BRL），手动 ?currency= 切换后写 30 天
+            覆盖 cookie 优先于映射；GeoIP 自动检测关闭（与语言映射冲突）；header 货币下拉
+            与语言切换器同 Noir 风格。验收：5 币种商品页价格换算正确（含 BRL 巴西格式）、
+            /de/ 页 €9,016 同请求生效、手动选择跨语言保持、PayPal 网关完好、
+            **Store API 带 EUR cookie 购物车总额仍 USD 980000**（pmcs_cart/checkout_
+            default_currency=yes 强制结账走基准美元，CURCY will_change() 在 cart/checkout/
+            account 页拒绝换汇——PayPal 安全前提，已实测）。
+            踩坑㉑：验证价格时 grep 到「$0.00」误判为 CURCY 损坏商品数据——实际是空购物车
+            mini-cart 小计的正常值；判断前必须看具体元素 HTML 上下文（商品 price_json 完好
+            即无损坏）。踩坑㉒：模糊 DELETE LIKE "%pmcs_%" 误删 3 个 pmcs 配置项（default/
+            cart_default/checkout_default）——清理语句必须枚举精确 option_name。另：CURCY
+            在 wp 钩子（非 init）才解析货币，mu-plugin 同步放 init 即可当请求生效
 2026-10-21  增强 T-3.2  注册表单新增确认密码字段（mu-plugin v1.3.0，客户需求）：
             渲染在密码之后、邀请码之前（优先级 9）；后端在 woocommerce_register_post
             校验一致性，不一致报「Passwords do not match」拒绝建号。仅当表单实际提交
