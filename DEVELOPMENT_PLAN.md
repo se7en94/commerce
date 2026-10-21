@@ -190,6 +190,15 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  修订 T-3.2  邀请码产品语义调整（客户需求）：①码格式缩短 VELORE-XXXX-XXXX-XXXX →
+            XXXX-XXXX（去掉前缀，31^8 ≈ 8.5e11 空间仍不可暴力枚举）；②邀请码改为选填——
+            空码直接注册，填了才校验+原子核销（无效码依旧拒绝，绕过面不变）。
+            端到端复测：CLI 11/11（走真实 wc_create_new_customer 钩子链路：无码成功/
+            无效码拒/有效码核销/复用回滚），浏览器 3/3（optional 标签/无码注册成功/短码拒绝）
+            踩坑⑭：mu-plugin 文件改完后 Web 端可能仍跑旧代码（mod_php OPcache 持有旧编译
+                   产物 + 浏览器对 HTML 的启发式缓存）而 CLI 每次起新进程永远看到新代码——
+                   「CLI 测试通过但页面没变」先 docker compose restart wordpress +
+                   URL 加 cache-busting 参数复测，别先怀疑代码
 2026-10-21  完成 T-3.2/T-3.3  邀请码注册闭环上线：自研方案（替代 Custom Registration Fields
             三方插件）wp-content/mu-plugins/velore-invite-codes.php。自定义表
             wp_velore_invite_codes / wp_velore_invite_code_uses（dbDelta 自建）。

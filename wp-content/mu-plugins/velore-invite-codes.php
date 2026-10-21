@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: VELORÉ Core — Invite Codes
- * Description: Invite-only registration. Adds an "Invite code" field to the My Account registration form, enforces backend validation on every customer-creation path, and provides an admin page (WooCommerce → Invite Codes) to generate / revoke / inspect codes and usage records.
- * Version:     1.0.0
+ * Description: Optional invite code at registration. Adds an "Invite code" field to the My Account registration form; a submitted code is validated on the backend and atomically consumed, a blank code registers without one. Admin page (WooCommerce → Invite Codes) to generate / revoke / inspect codes and usage records.
+ * Version:     1.1.0
  * Text Domain: velore-core
  *
  * mu-plugin: always on by design — registration gating is core business logic.
@@ -11,6 +11,8 @@
  * - Validation runs in `woocommerce_register_post`, which fires inside
  *   wc_create_new_customer() and therefore covers every customer-creation path
  *   (My Account form, classic checkout signup, Store API checkout, wc/v3 REST).
+ *   An empty code is allowed through (codes are optional); a submitted code must
+ *   be valid or account creation is aborted.
  * - Consumption runs as a single conditional UPDATE (atomic claim) — two
  *   concurrent registrations can never exceed a code's max_uses.
  * - Admin / privileged-API contexts (current_user_can('manage_woocommerce'))
@@ -26,7 +28,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 const VELORE_IC_DB_VERSION   = '1.0';
-const VELORE_IC_CODE_PREFIX  = 'VELORE-';
 const VELORE_IC_ALPHABET     = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ'; // no 0/O/1/I — unambiguous when read aloud
 const VELORE_IC_ERROR        = 'This invite code is invalid or no longer valid.';
 
@@ -121,13 +122,14 @@ function velore_ic_generate( int $count, int $max_uses, int $expires_in_days, st
 	for ( $i = 0; $i < $count; $i++ ) {
 		$attempts = 0;
 		do {
-			$code = VELORE_IC_CODE_PREFIX . velore_ic_random_block() . '-' . velore_ic_random_block() . '-' . velore_ic_random_block();
+			// 8 chars from a 31-char alphabet (31^8 ≈ 8.5e11) — short to type, brute-force infeasible.
+			$code = velore_ic_random_block() . '-' . velore_ic_random_block();
 			$exists = $wpdb->get_var( $wpdb->prepare( 'SELECT id FROM ' . velore_ic_table_codes() . ' WHERE code = %s', $code ) );
 			$attempts++;
 		} while ( $exists && $attempts < 5 );
 
 		if ( $exists ) {
-			continue; // 31^12 space — collision after 5 retries is effectively impossible; skip rather than fail the batch
+			continue; // 31^8 space — collision after 5 retries is effectively impossible; skip rather than fail the batch
 		}
 
 		$ok = $wpdb->insert(
@@ -217,8 +219,8 @@ add_action( 'woocommerce_register_form', function () {
 	$value = isset( $_POST['velore_invite_code'] ) ? sanitize_text_field( wp_unslash( $_POST['velore_invite_code'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- mirrors core form fields, nonce verified by WC
 	?>
 	<p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
-		<label for="velore_invite_code"><?php esc_html_e( 'Invite code', 'velore-core' ); ?>&nbsp;<span class="required" aria-hidden="true">*</span><span class="screen-reader-text"><?php esc_html_e( 'Required', 'woocommerce' ); ?></span></label>
-		<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="velore_invite_code" id="velore_invite_code" value="<?php echo esc_attr( $value ); ?>" autocomplete="off" spellcheck="false" placeholder="VELORE-XXXX-XXXX-XXXX" required aria-required="true" />
+		<label for="velore_invite_code"><?php esc_html_e( 'Invite code', 'velore-core' ); ?> <span class="optional">(<?php esc_html_e( 'optional', 'velore-core' ); ?>)</span></label>
+		<input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="velore_invite_code" id="velore_invite_code" value="<?php echo esc_attr( $value ); ?>" autocomplete="off" spellcheck="false" placeholder="XXXX-XXXX" />
 	</p>
 	<?php
 } );
@@ -235,31 +237,38 @@ add_action( 'woocommerce_register_post', function ( $username, $email, WP_Error 
 
 	$code = isset( $_POST['velore_invite_code'] ) ? velore_ic_normalize( wp_unslash( $_POST['velore_invite_code'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce verified by WC form handler
 
+	// Codes are optional: blank means "registering without an invite".
 	if ( '' === $code ) {
-		$errors->add( 'velore_invite_code_missing', esc_html__( 'An invite code is required to register.', 'velore-core' ) );
 		return;
 	}
 
-	// One generic message — never reveal whether a code exists, was revoked, is expired or used up.
+	// A submitted code must be claimable — one generic message, never reveal
+	// whether it exists, was revoked, is expired or used up.
 	if ( ! velore_ic_is_claimable( $code ) ) {
 		$errors->add( 'velore_invite_code_invalid', esc_html__( VELORE_IC_ERROR, 'velore-core' ) );
 	}
 }, 10, 3 );
 
 /**
- * Atomic consumption right after the account row exists. If the claim loses a
- * race for the last slot (validation and claim are separate instants), roll the
- * just-created account back and surface the same generic error.
+ * Atomic consumption right after the account row exists — only for registrations
+ * that actually submitted a code. If the claim loses a race for the last slot
+ * (validation and claim are separate instants), roll the just-created account
+ * back and surface the same generic error.
  */
 add_action( 'woocommerce_created_customer', function ( $customer_id, $new_customer_data ) {
 	if ( current_user_can( 'manage_woocommerce' ) ) {
 		return;
 	}
 
-	$code  = isset( $_POST['velore_invite_code'] ) ? velore_ic_normalize( wp_unslash( $_POST['velore_invite_code'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	$code = isset( $_POST['velore_invite_code'] ) ? velore_ic_normalize( wp_unslash( $_POST['velore_invite_code'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Missing
+
+	if ( '' === $code ) {
+		return;
+	}
+
 	$email = isset( $new_customer_data['user_email'] ) ? (string) $new_customer_data['user_email'] : '';
 
-	if ( '' !== $code && velore_ic_claim( $code, (int) $customer_id, $email ) ) {
+	if ( velore_ic_claim( $code, (int) $customer_id, $email ) ) {
 		return;
 	}
 
