@@ -36,6 +36,8 @@ services:
       - ./:/var/www/html/wp-content/plugins/woocommerce
       # 主题实时挂载：宿主机编辑即时生效，无需 docker cp
       - ./wp-content/themes:/var/www/html/wp-content/themes
+      # mu-plugins 实时挂载：站点级业务逻辑（必载插件，后台不可停用）
+      - ./wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins
     ports:
       - "8080:80"
 

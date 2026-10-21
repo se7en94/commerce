@@ -146,7 +146,7 @@
 
 | Task | 描述 | 验收标准 | 预估 |
 |---|---|---|---|
-| T-3.1 | **自定义订单状态**「待向供应商付款」 | 注册 `wc-pending-supplier` 状态，插入 processing 之后 | 2h |
+| ✅ T-3.1 | **自定义订单状态**「待向供应商付款」 | 注册 `wc-pending-supplier` 状态，插入 processing 之后 | 2h |
 | T-3.2 | **邀请码注册**（方案 B）| Custom Registration Fields 插件 + `woocommerce_register_post` hook 校验；无效码拒绝注册 | 6h |
 | T-3.3 | 邀请码管理后台 | 管理员能生成/作废/查看使用记录 | 4h |
 | T-3.4 | **多语言**（Polylang 免费版）| 英/中/西/德/葡/法 6 语言切换；商品可逐语言翻译 | 8h |
@@ -190,6 +190,16 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-21  完成 T-3.1  自定义订单状态「待向供应商付款」上线：新建 mu-plugin 体系
+            wp-content/mu-plugins/velore-order-status.php（必载不可停用，业务逻辑与主题解耦），
+            wc-pending-supplier 插入 processing 之后；计入 paid statuses 与 legacy reports
+            （客户已付款语义）；订单列表琥珀金徽章；docker-compose 新增 mu-plugins 实时挂载。
+            端到端验证：订单 #71 processing → pending-supplier → processing 往返成功，
+            is_paid()=true，HPOS 模式确认启用
+            踩坑⑫：HPOS 启用时订单列表 bulk actions 过滤器是
+                   bulk_actions-woocommerce_page_wc-orders，legacy 才是
+                   bulk_actions-edit-shop_order——只挂 legacy 那个在 HPOS 站点不生效；
+                   mark_{slug} 动作本身两套列表都会自动处理，只需加 label
 2026-10-20  完成 T-2.4  商品属性收尾：CSV 追加 Condition 属性（Excellent/Very Good/Pristine，
             从 Short description 提取），详情页 Additional Information 显示 Brand + Condition。
             验收标准重新定义：寄卖模式每件孤品库存 1，「选变体」不适用，参照 Fashionphile
