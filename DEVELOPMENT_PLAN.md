@@ -201,6 +201,16 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-22  优化        首页非英雄区宽度与英雄区对齐（用户反馈：其他区域过窄）。
+            根因：三个内容区（类目/精选商品/价值主张）外层 alignfull group 用
+            constrained 布局但未设 contentSize，子块被全局 content-size 居中限宽
+            （实测 800px），而英雄区内容贴 6vw 边距全宽延伸。修复：删除外层
+            group 的 constrained 布局（perl 批量 6 个语言模板 front-page*.html，
+            精确匹配无 contentSize 的 constrained，保留 4 处带 contentSize 的
+            居中排版组不受影响）。实测：类目/商品/价值主张内容 x=64（=6vw）
+            宽 920（=视口减两侧边距），与英雄区边界严格对齐。主题 1.2.8。
+            注意：constrained 限宽在 CSS 层由 WP 生成原子类实现（类名随结构变
+            化不稳定），改模板布局属性才是稳定方案
 2026-10-22  优化        详情页加购按钮与标题/价格基线对齐（用户反馈：按钮右偏不
             齐）。三重根因叠加右偏 8px：form.cart 自带 padding-left 4px + grid
             布局中宽 0 的数量列占位 + .quantity 隐藏后 margin-right 4px 残留
