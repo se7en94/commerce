@@ -201,6 +201,19 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-22  优化        商品卡片标题统一两行高度：.luxury-product-title/.luxury-search-
+            card-title 固定 height:2.7em（= 2 行 × line-height 1.35，em 随字号自
+            适应）+ overflow 截断 + line-clamp 尽力省略；front-page 标题补类名
+            钩子并统一行高 1.35（与 shop/search 一致）。主题 1.2.2。
+            验收：shop 16 卡 / 首页 8 卡 / 搜索页全部 44px 严格统一；首页 3 行
+            长标题实测截断（scroll 64→44）；超长文本注入测试 44px。
+            踩坑㉚：新版 Chrome 把 display:-webkit-box 标准化为 flow-root
+            （CSSOM 层面），-webkit-line-clamp 前缀链路在实测中不可靠（内联强制
+            也不截断、标准 line-clamp CSS.supports=false）——两行截断需求改用固定
+            height 硬约束实现，不依赖任何 clamp 实现；另 getComputedStyle 的
+            display 值会误导排障（computed 显示 flow-root 但 CSS 声明的 -webkit-box
+            在布局层可能仍生效），验证截断必须用行为实验（scrollHeight vs
+            clientHeight）而非读 computed
 2026-10-21  产出 T-6.x  部署验收文档 deliverables/07-Phase6-生产部署测试检查清单.md：
             按 T-6.1~T-6.8 展开为 40+ 可勾选检查项 + 上线后 24–48h 监控 + 退出/
             回滚标准。与 05/06 分工：05 管切换操作、06 管支付测试、07 管部署验收。
