@@ -201,6 +201,12 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-22  优化        商品卡片价格与加购按钮改为直接显示（用户反馈：hover 才
+            显示价格反直觉）。删除 opacity:0 + hover 淡入规则块及移动端
+            「触屏强制可见」补丁（已冗余）；图片 hover 放大保留（纯装饰不藏
+            信息）。主题 1.2.3。验收：shop 16 卡价格+按钮全部 opacity=1 直接
+            可见（DOM 实测）；价格样例 $38,500 正常渲染。设计原则沉淀：价格/
+            库存等交易决策信息禁止 hover 藏匿（触屏无 hover + 转化漏斗）
 2026-10-22  优化        商品卡片标题统一两行高度：.luxury-product-title/.luxury-search-
             card-title 固定 height:2.7em（= 2 行 × line-height 1.35，em 随字号自
             适应）+ overflow 截断 + line-clamp 尽力省略；front-page 标题补类名

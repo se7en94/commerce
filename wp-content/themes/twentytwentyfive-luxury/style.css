@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.2.2
+Version: 1.2.3
 Text Domain: tt5-luxury
 */
 
@@ -15,23 +15,9 @@ Text Domain: tt5-luxury
    ============================================ */
 
 /* ----- Product cards (archive grid) -----
-   验收 T-1.2：默认只显示图 + 标题，hover 时淡入价格与加购按钮
+   价格与加购按钮直接显示（信息直达，转化优先；触屏无 hover 也不丢信息）
    注意：luxury-product-card 落在包裹全部商品的 UL 上，
    per-item 效果必须用 > li 选择到单个商品 */
-.luxury-product-card>li .luxury-product-price,
-.luxury-product-card>li .luxury-product-button {
-	opacity: 0;
-	transform: translateY(6px);
-	transition: opacity 0.35s ease, transform 0.35s ease;
-}
-
-.luxury-product-card>li:hover .luxury-product-price,
-.luxury-product-card>li:hover .luxury-product-button,
-.luxury-product-card>li:focus-within .luxury-product-price,
-.luxury-product-card>li:focus-within .luxury-product-button {
-	opacity: 1;
-	transform: translateY(0);
-}
 
 /* 图片 hover 轻微放大，保持极简质感 */
 .luxury-product-card>li .luxury-product-image img {
@@ -558,13 +544,8 @@ select:focus-visible {
 	}
 }
 
-/* 移动端：商品卡片间距收紧，价格在触屏上始终可见（无 hover） */
+/* 移动端：商品卡片间距收紧 */
 @media (max-width: 782px) {
-	.luxury-product-card>li .luxury-product-price {
-		opacity: 1;
-		transform: none;
-	}
-
 	.wp-block-woocommerce-product-collection {
 		gap: 24px !important;
 	}
