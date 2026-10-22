@@ -5,7 +5,7 @@ Description: Luxury fashion child theme of Twenty Twenty-Five. Dark gold palette
 Author: Custom
 Author URI: https://example.com
 Template: twentytwentyfive
-Version: 1.2.3
+Version: 1.2.7
 Text Domain: tt5-luxury
 */
 
@@ -26,6 +26,28 @@ Text Domain: tt5-luxury
 
 .luxury-product-card>li:hover .luxury-product-image img {
 	transform: scale(1.03);
+}
+
+/* 详情页加购按钮与标题/价格基线对齐：
+   form.cart 为 grid 布局，宽 0 的数量列 + 4px gap + 4px padding-left 合计右偏 8px。
+   改 flex 消除空列占位，按钮 block + fit-content 不撑满宽度 */
+.wc-block-add-to-cart-form form.cart {
+	display: flex;
+	flex-wrap: wrap;
+	padding-left: 0;
+}
+
+.wc-block-add-to-cart-form form.cart .single_add_to_cart_button {
+	display: block;
+	width: fit-content;
+	margin-left: 0;
+}
+
+/* 隐藏的数量框宽 0 但 margin-right 4px 仍占位，一并清零
+   （WC 源样式特异性高，需 !important 覆盖） */
+.woocommerce div.product form.cart .quantity,
+.wc-block-add-to-cart-form form.cart .quantity {
+	margin-right: 0 !important;
 }
 
 /* 商品卡片标题：固定两行高度，超长省略，保证网格高度统一

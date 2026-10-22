@@ -201,6 +201,16 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-22  优化        详情页加购按钮与标题/价格基线对齐（用户反馈：按钮右偏不
+            齐）。三重根因叠加右偏 8px：form.cart 自带 padding-left 4px + grid
+            布局中宽 0 的数量列占位 + .quantity 隐藏后 margin-right 4px 残留
+            （WC 源样式特异性高，需 !important 覆盖）。修复：form.cart 改
+            flex 布局 + padding 清零 + quantity margin 清零 + 按钮 block/
+            fit-content。实测 title.x=price.x=btn.x=607 严格对齐。主题 1.2.7。
+            全站价格可见性复扫：shop/首页/详情页/搜索/分类页价格全部 opacity=1
+            直接显示（分类页 1 个 disp=none 为「Previous price」划线原价，无
+            促销场景属预期）；用户报告的「其他页面 hover 才显示价格」判断为
+            浏览器缓存旧 CSS，主题版本号已升级破缓存
 2026-10-22  优化        商品卡片价格与加购按钮改为直接显示（用户反馈：hover 才
             显示价格反直觉）。删除 opacity:0 + hover 淡入规则块及移动端
             「触屏强制可见」补丁（已冗余）；图片 hover 放大保留（纯装饰不藏
