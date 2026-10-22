@@ -201,6 +201,11 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-22  优化        隐藏后台编辑器 Yoast SEO 侧栏（mu-plugins/velore-admin-
+            tweaks.php，wpseo_metabox filter __return_false）。商品 SEO 标题/描述
+            由全局模板自动生成，面板零填写需求；实测 filter 生效且前台 SEO 输出
+            不受影响（og:title/description/JSON-LD 均在）。如需临时查看某内容
+            的 Yoast 面板：注释该 filter 行重启容器即可
 2026-10-22  清理        停用并删除零使用插件 Spectra（ultimate-addons-for-
             gutenberg v2.20.5）+ starter-templates（用户确认）。审查证据：主题
             模板与已发布内容 0 处 uagb/ 块引用、无任何设置项——为早期搭建残留。
