@@ -201,6 +201,13 @@
 ## 5. CHANGELOG（按时间倒序）
 
 ```
+2026-10-22  清理        停用并删除零使用插件 Spectra（ultimate-addons-for-
+            gutenberg v2.20.5）+ starter-templates（用户确认）。审查证据：主题
+            模板与已发布内容 0 处 uagb/ 块引用、无任何设置项——为早期搭建残留。
+            删除后冒烟：首页/商店/商品页/购物车 200、结账 302 重定向正常、
+            页面 0 处 spectra 残留引用。踩坑㉛：CLI 下 delete_plugins 静默失败
+            （WP_Filesystem 初始化依赖），deactivate_plugins 成功后目录需手动
+            rm 移除；07 清单 2.4 插件核对表本就未列此二插件，现与实际状态精确一致
 2026-10-22  优化        首页非英雄区宽度与英雄区对齐（用户反馈：其他区域过窄）。
             根因：三个内容区（类目/精选商品/价值主张）外层 alignfull group 用
             constrained 布局但未设 contentSize，子块被全局 content-size 居中限宽
